@@ -1,0 +1,238 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String?
+  emailVerified DateTime?
+  image         String?
+  role          UserRole  @default(TRADER)
+  plan          PlanType  @default(FREE)
+  planStartDate DateTime?
+  planEndDate   DateTime?
+  
+  // Relations
+  accounts      Account[]
+  sessions      Session[]
+  trades        Trade[]
+  journalEntries JournalEntry[]
+  affiliateLink AffiliateLink?
+  affiliateReferrals Referral[]
+  competitions  CompetitionEntry[]
+  strategyCalls StrategyCall[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum UserRole {
+  TRADER
+  ADMIN
+  MENTOR
+}
+
+enum PlanType {
+  FREE
+  PRO_TRADER
+  ELITE_TRADER
+  MASTERY_CIRCLE
+}
+
+model Trade {
+  id            String   @id @default(cuid())
+  userId        String
+  symbol        String
+  entryPrice    Float
+  exitPrice     Float?
+  quantity      Float
+  type          TradeType
+  status        TradeStatus @default(OPEN)
+  profitLoss    Float?
+  entryDate     DateTime
+  exitDate      DateTime?
+  notes         String?  @db.Text
+  screenshot    String?
+  
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([entryDate])
+}
+
+enum TradeType {
+  BUY
+  SELL
+}
+
+enum TradeStatus {
+  OPEN
+  CLOSED
+  CANCELLED
+}
+
+model JournalEntry {
+  id          String   @id @default(cuid())
+  userId      String
+  date        DateTime
+  notes       String?  @db.Text
+  mindset     String?  @db.Text
+  performance String?  @db.Text
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId, date])
+  @@unique([userId, date])
+}
+
+model AffiliateLink {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  code      String   @unique
+  clicks    Int      @default(0)
+  signups   Int      @default(0)
+  conversions Int    @default(0)
+  earnings  Float    @default(0)
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  referrals Referral[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Referral {
+  id              String   @id @default(cuid())
+  affiliateLinkId String
+  referredUserId  String?  @unique
+  email           String
+  status          ReferralStatus @default(PENDING)
+  commission      Float    @default(0)
+  paid            Boolean  @default(false)
+  paidAt          DateTime?
+  
+  affiliateLink   AffiliateLink @relation(fields: [affiliateLinkId], references: [id], onDelete: Cascade)
+  referredUser    User?    @relation(fields: [referredUserId], references: [id], onDelete: SetNull)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([affiliateLinkId])
+  @@index([email])
+}
+
+enum ReferralStatus {
+  PENDING
+  SIGNED_UP
+  CONVERTED
+  PAID
+}
+
+model CompetitionEntry {
+  id          String   @id @default(cuid())
+  userId      String
+  competitionId String
+  score       Float    @default(0)
+  rank        Int?
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([competitionId])
+}
+
+model StrategyCall {
+  id          String   @id @default(cuid())
+  userId      String
+  scheduledAt DateTime
+  status      CallStatus @default(SCHEDULED)
+  notes       String?  @db.Text
+  formData    Json?
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([scheduledAt])
+}
+
+enum CallStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  email     String
+  name      String?
+  source    String?
+  interest  String?
+  metadata  Json?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([source])
+}
