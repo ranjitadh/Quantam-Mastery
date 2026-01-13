@@ -15,7 +15,7 @@ export default function CompetitionPage() {
       >
         <div className="relative h-[300px] lg:h-[400px]">
           <motion.img
-            src="/images/download-4.jpg"
+            src="/images/download-4.png"
             alt="Trading Competition Championship"
             className="w-full h-full object-cover"
             initial={{ scale: 1.1 }}

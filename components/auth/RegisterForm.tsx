@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'react-hot-toast'
-import ReCAPTCHA from 'react-google-recaptcha'
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -27,7 +26,6 @@ interface RegisterFormProps {
 
 export default function RegisterForm({ plan, type }: RegisterFormProps) {
   const router = useRouter()
-  const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const {
@@ -39,11 +37,6 @@ export default function RegisterForm({ plan, type }: RegisterFormProps) {
   })
 
   const onSubmit = async (data: RegisterFormData) => {
-    if (!recaptchaValue) {
-      toast.error('Please complete the reCAPTCHA verification')
-      return
-    }
-
     setIsSubmitting(true)
     try {
       const response = await fetch('/api/auth/register', {
@@ -53,7 +46,6 @@ export default function RegisterForm({ plan, type }: RegisterFormProps) {
           ...data,
           plan,
           type,
-          recaptchaToken: recaptchaValue,
         }),
       })
 
@@ -136,13 +128,6 @@ export default function RegisterForm({ plan, type }: RegisterFormProps) {
         {errors.confirmPassword && (
           <p className="mt-1 text-sm text-red-400">{errors.confirmPassword.message}</p>
         )}
-      </div>
-
-      <div className="flex justify-center">
-        <ReCAPTCHA
-          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'}
-          onChange={(value) => setRecaptchaValue(value)}
-        />
       </div>
 
       <button

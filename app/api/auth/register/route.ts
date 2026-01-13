@@ -9,31 +9,14 @@ const registerSchema = z.object({
   password: z.string().min(8),
   plan: z.enum(['FREE', 'PRO_TRADER', 'ELITE_TRADER', 'MASTERY_CIRCLE']).optional(),
   type: z.string().optional(),
-  recaptchaToken: z.string().optional(),
 })
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    
+
     // Validate input
     const validatedData = registerSchema.parse(body)
-
-    // Verify reCAPTCHA if provided
-    if (validatedData.recaptchaToken) {
-      const recaptchaResponse = await fetch(
-        `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${validatedData.recaptchaToken}`,
-        { method: 'POST' }
-      )
-      const recaptchaData = await recaptchaResponse.json()
-      
-      if (!recaptchaData.success) {
-        return NextResponse.json(
-          { error: 'reCAPTCHA verification failed' },
-          { status: 400 }
-        )
-      }
-    }
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({

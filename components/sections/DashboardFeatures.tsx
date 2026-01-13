@@ -95,7 +95,7 @@ export default function DashboardFeatures() {
                   whileHover={{ scale: 1.02 }}
                 >
                   <img
-                    src="/images/download-4.jpg"
+                    src="/images/download-4.png"
                     alt={`${activeTab} Dashboard Preview`}
                     className="w-full h-96 object-cover"
                   />

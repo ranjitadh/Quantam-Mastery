@@ -61,6 +61,12 @@ const config: Config = {
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
       },
+      maxWidth: {
+        // Reduce default max-widths by 25%
+        '7xl': '960px',  // Original: 1280px, Reduced: 960px (25% smaller)
+        '6xl': '864px',  // Original: 1152px, Reduced: 864px (25% smaller)
+        '5xl': '768px',  // Original: 1024px, Reduced: 768px (25% smaller)
+      },
     },
   },
   plugins: [],

@@ -4,10 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:auto": "./scripts/dev.sh",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "db:setup": "./scripts/setup-db.sh",
+    "db:start": "pg_ctl -D /opt/homebrew/var/postgresql@15 -l /opt/homebrew/var/log/postgresql@15.log start",
+    "db:stop": "pg_ctl -D /opt/homebrew/var/postgresql@15 stop",
+    "db:status": "pg_isready && echo '✅ PostgreSQL is running' || echo '❌ PostgreSQL is not running'"
   },
   "dependencies": {
     "next": "^14.2.0",
