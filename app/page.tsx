@@ -8,6 +8,7 @@ import MissionStatement from '@/components/sections/MissionStatement'
 import VisionStatement from '@/components/sections/VisionStatement'
 import ExpertsSection from '@/components/sections/ExpertsSection'
 import DashboardFeatures from '@/components/sections/DashboardFeatures'
+// import BrandShowcase from '@/components/sections/BrandShowcase'
 import CalendarJournaling from '@/components/sections/CalendarJournaling'
 import BenefitsSection from '@/components/sections/BenefitsSection'
 import Testimonials from '@/components/sections/Testimonials'
@@ -25,6 +26,7 @@ export default function HomePage() {
       <VisionStatement />
       <ExpertsSection />
       <DashboardFeatures />
+      {/* <BrandShowcase /> */}
       <CalendarJournaling />
       <BenefitsSection />
       <Testimonials />

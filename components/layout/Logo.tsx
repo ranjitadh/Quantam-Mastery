@@ -40,17 +40,17 @@ export default function Logo({ variant = 'default', className = '', showText = t
   return (
     <Link href="/" className={`flex items-center gap-3 group ${className}`}>
       {/* Logo Icon Container */}
-      <div className={`relative ${colors.containerBg} ${colors.glow} rounded-lg p-2 transition-transform group-hover:scale-105`}>
+      <div className={`relative ${colors.containerBg} ${colors.glow} rounded-lg transition-transform group-hover:scale-105`}>
         <Image
-          src="/images/Logo.png"
+          src="/images/qtm-logo-white.png"
           alt="Quantum Trading Mastery Logo"
-          width={48}
-          height={48}
-          className="w-12 h-12 object-contain"
+          width={180}
+          height={60}
+          className="h-12 w-auto object-contain"
           priority
         />
       </div>
-      
+
       {/* Logo Text */}
       {showText && (
         <div className="flex flex-col">

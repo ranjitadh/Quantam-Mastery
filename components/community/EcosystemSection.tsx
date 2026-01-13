@@ -59,12 +59,32 @@ export default function EcosystemSection() {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="aspect-square w-full rounded-full bg-gradient-to-br from-secondary-bright/10 to-secondary-bright/5 border-4 border-secondary-bright/20 flex items-center justify-center">
-              <div className="text-center text-gray-400">
-                <p className="text-sm font-medium mb-2">Dashboard Image</p>
-                <p className="text-xs">community feature</p>
-              </div>
-            </div>
+            <motion.div
+              whileHover={{ scale: 1.05, rotate: 2 }}
+              transition={{ duration: 0.5 }}
+              className="relative overflow-hidden rounded-full aspect-square border-4 border-secondary-bright/40 shadow-2xl shadow-secondary-bright/20"
+            >
+              <img
+                src="/images/download-2.jpg"
+                alt="Futuristic Trading Ecosystem - Synchronized Platforms"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/30 to-transparent" />
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+                className="absolute bottom-0 left-0 right-0 p-8 text-center"
+              >
+                <p className="text-base font-bold text-secondary-bright mb-1 drop-shadow-lg">
+                  Integrated Ecosystem
+                </p>
+                <p className="text-sm text-gray-200 drop-shadow-md">
+                  All tools synchronized
+                </p>
+              </motion.div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

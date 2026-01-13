@@ -2,46 +2,59 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import ParticleBackground from '../animations/ParticleBackground'
+import GlowingOrb from '../animations/GlowingOrb'
+import WaveBackground from '../animations/WaveBackground'
 
 export default function Hero() {
   return (
     <section className="relative pt-24 pb-20 md:pt-32 md:pb-32 px-4 sm:px-6 lg:px-8 bg-dark overflow-hidden min-h-[90vh] flex items-center">
+      {/* Wave Background */}
+      <WaveBackground variant="both" opacity={0.4} />
+
+      {/* Particle Background */}
+      <ParticleBackground />
+
       {/* Background gradient glows - neon green */}
       <div className="absolute inset-0 bg-gradient-to-br from-black via-dark to-black"></div>
-      
-      {/* Top-left green glow */}
-      <div 
-        className="absolute top-0 left-0 w-[600px] h-[600px] rounded-full blur-3xl opacity-30"
+
+      {/* Animated Glowing Orbs */}
+      <GlowingOrb size={600} color="rgba(192, 245, 61, 0.15)" className="top-0 left-0" />
+      <GlowingOrb size={500} color="rgba(135, 213, 147, 0.2)" className="bottom-0 right-0" />
+      <motion.div
+        className="absolute top-1/2 left-1/2 w-[400px] h-[400px] rounded-full blur-3xl"
         style={{
-          background: 'radial-gradient(circle, rgba(192, 245, 61, 0.4), rgba(135, 213, 147, 0.2), transparent)'
+          background: 'radial-gradient(circle, rgba(192, 245, 61, 0.2), transparent)',
+          x: '-50%',
+          y: '-50%'
         }}
-      ></div>
-      
-      {/* Bottom-right green glow */}
-      <div 
-        className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full blur-3xl opacity-40"
-        style={{
-          background: 'radial-gradient(circle, rgba(192, 245, 61, 0.5), rgba(135, 213, 147, 0.3), transparent)'
+        animate={{
+          scale: [1, 1.3, 1],
+          opacity: [0.2, 0.4, 0.2],
         }}
-      ></div>
-      
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+
       {/* Grid pattern overlay */}
-      <div className="absolute inset-0 opacity-10" style={{
-        backgroundImage: 'linear-gradient(rgba(192, 245, 61, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(192, 245, 61, 0.1) 1px, transparent 1px)',
-        backgroundSize: '50px 50px'
-      }}></div>
-      
-      {/* Clouds at bottom */}
-      <div className="absolute bottom-0 left-0 w-full h-32 opacity-30">
-        <svg className="absolute bottom-0 left-0 w-64 h-full" viewBox="0 0 400 200" fill="none">
-          <path d="M0,150 Q100,100 200,120 T400,130 L400,200 L0,200 Z" fill="#d97706" opacity="0.4"/>
-          <path d="M50,170 Q150,120 250,140 T450,150 L450,200 L50,200 Z" fill="#f59e0b" opacity="0.3"/>
-        </svg>
-        <svg className="absolute bottom-0 right-0 w-64 h-full" viewBox="0 0 400 200" fill="none">
-          <path d="M0,150 Q100,100 200,120 T400,130 L400,200 L0,200 Z" fill="#d97706" opacity="0.4"/>
-          <path d="M50,170 Q150,120 250,140 T450,150 L450,200 L50,200 Z" fill="#f59e0b" opacity="0.3"/>
-        </svg>
-      </div>
+      <motion.div
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(192, 245, 61, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(192, 245, 61, 0.1) 1px, transparent 1px)',
+          backgroundSize: '50px 50px'
+        }}
+        animate={{
+          backgroundPosition: ['0px 0px', '50px 50px'],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "linear"
+        }}
+      ></motion.div>
 
       <div className="relative mx-auto max-w-7xl w-full z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -59,11 +72,11 @@ export default function Hero() {
                 Mastery
               </span>
             </h1>
-            
+
             <p className="text-lg md:text-xl text-gray-300 max-w-xl mb-8">
               A unified, education-first ecosystem that combines structured learning, psychological development, performance tracking, community, and competition.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 pt-6">
               <Link
                 href="/register"
@@ -80,100 +93,80 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Right Visual - Abstract Trend Line with Logo */}
+          {/* Right Visual - Brand Dashboard Image */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9, x: 50 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
             className="relative h-[500px] md:h-[600px] flex items-center justify-center"
           >
-            {/* Trend line with data points */}
-            <svg 
-              className="absolute inset-0 w-full h-full" 
-              viewBox="0 0 400 400" 
-              preserveAspectRatio="xMidYMid meet"
+            {/* Floating Dashboard Preview */}
+            <motion.div
+              className="relative w-full max-w-lg"
+              animate={{
+                y: [0, -20, 0],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
             >
-              <defs>
-                <linearGradient id="trendGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#00F2FF" />
-                  <stop offset="50%" stopColor="#C0F53D" />
-                  <stop offset="100%" stopColor="#FF00E5" />
-                </linearGradient>
-              </defs>
-              
-              {/* Background candlestick bars */}
-              {[...Array(8)].map((_, i) => (
-                <rect
-                  key={i}
-                  x={50 + i * 40}
-                  y={200 + Math.random() * 60 - 30}
-                  width="6"
-                  height={30 + Math.random() * 40}
-                  fill="#87D593"
-                  opacity="0.2"
+              <motion.div
+                className="relative overflow-hidden rounded-3xl border-4 border-secondary-bright/40 shadow-2xl shadow-secondary-bright/30"
+                whileHover={{ scale: 1.05, rotate: 2 }}
+                transition={{ duration: 0.4 }}
+              >
+                <img
+                  src="/images/brandkit/QM brand_pages-to-jpg-0007.jpg"
+                  alt="Quantum Mastery Dashboard"
+                  className="w-full h-auto object-cover"
                 />
-              ))}
-              
-              {/* Main trend line */}
-              <path
-                d="M 50 350 Q 100 300 150 250 T 250 200 T 350 150"
-                stroke="url(#trendGradient)"
-                strokeWidth="4"
-                fill="none"
-                className="drop-shadow-[0_0_10px_rgba(192,245,61,0.6)]"
+                <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent" />
+
+                {/* Floating Badges */}
+                <motion.div
+                  className="absolute top-4 right-4 bg-secondary-bright/90 backdrop-blur-sm rounded-lg px-4 py-2"
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <span className="text-dark font-bold text-sm">LIVE</span>
+                </motion.div>
+
+                <motion.div
+                  className="absolute bottom-4 left-4 bg-dark/80 backdrop-blur-sm rounded-lg px-4 py-2 border border-secondary-bright/40"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 1.5 }}
+                >
+                  <p className="text-secondary-bright font-bold text-sm">Real-Time Analytics</p>
+                </motion.div>
+              </motion.div>
+
+              {/* Decorative Elements */}
+              <motion.div
+                className="absolute -top-4 -right-4 w-24 h-24 bg-secondary-bright/20 rounded-full blur-2xl"
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.3, 0.6, 0.3],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                }}
               />
-              
-              {/* Data points along the line */}
-              {[50, 150, 250, 350].map((x, i) => {
-                const y = 350 - (i * 50 + Math.random() * 20);
-                return (
-                  <g key={i}>
-                    <circle
-                      cx={x}
-                      cy={y}
-                      r="8"
-                      fill="white"
-                      className="drop-shadow-[0_0_15px_rgba(192,245,61,0.8)]"
-                    />
-                    <circle
-                      cx={x}
-                      cy={y}
-                      r="4"
-                      fill="#C0F53D"
-                    />
-                  </g>
-                );
-              })}
-            </svg>
-            
-            {/* Central Logo Icon */}
-            <div className="relative z-10 mt-20">
-              <div className="w-32 h-32 md:w-40 md:h-40">
-                <svg viewBox="0 0 100 100" fill="none" className="w-full h-full">
-                  <defs>
-                    <linearGradient id="logoGradientHero" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#00F2FF" />
-                      <stop offset="50%" stopColor="#C0F53D" />
-                      <stop offset="100%" stopColor="#FF00E5" />
-                    </linearGradient>
-                  </defs>
-                  
-                  {/* Candlestick bars */}
-                  <rect x="35" y="25" width="5" height="25" fill="url(#logoGradientHero)" />
-                  <rect x="47.5" y="15" width="5" height="35" fill="url(#logoGradientHero)" />
-                  <rect x="60" y="30" width="5" height="20" fill="url(#logoGradientHero)" />
-                  
-                  {/* Q shape / Concentric circles */}
-                  <circle cx="50" cy="50" r="25" stroke="url(#logoGradientHero)" strokeWidth="2" fill="none" opacity="0.6" />
-                  <circle cx="50" cy="50" r="18" stroke="url(#logoGradientHero)" strokeWidth="1.5" fill="none" opacity="0.7" />
-                  <path d="M 50 25 A 25 25 0 1 1 50 75" stroke="url(#logoGradientHero)" strokeWidth="2" fill="none" />
-                  
-                  {/* Arrows */}
-                  <path d="M 30 70 L 45 55 L 55 60" stroke="url(#logoGradientHero)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-                  <path d="M 70 30 L 55 45 L 45 40" stroke="url(#logoGradientHero)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-                </svg>
-              </div>
-            </div>
+              <motion.div
+                className="absolute -bottom-4 -left-4 w-32 h-32 bg-primary-cyan/20 rounded-full blur-2xl"
+                animate={{
+                  scale: [1, 1.3, 1],
+                  opacity: [0.2, 0.5, 0.2],
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                }}
+              />
+            </motion.div>
           </motion.div>
         </div>
       </div>

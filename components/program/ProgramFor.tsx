@@ -52,14 +52,33 @@ export default function ProgramFor() {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="aspect-video w-full bg-gradient-to-br from-secondary-bright/10 to-secondary-bright/5 rounded-lg border-2 border-secondary-bright/20 flex items-center justify-center">
-              <div className="text-center text-gray-400">
-                <svg className="w-24 h-24 mx-auto mb-4 text-secondary-bright/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <p className="text-sm">Program Image</p>
-              </div>
-            </div>
+            <motion.div
+              className="relative overflow-hidden rounded-2xl border-2 border-secondary-bright/30 shadow-2xl"
+              whileHover={{ scale: 1.03, rotate: 1 }}
+              transition={{ duration: 0.4 }}
+              animate={{
+                y: [0, -10, 0],
+              }}
+              style={{
+                transition: 'transform 6s ease-in-out infinite'
+              }}
+            >
+              <img
+                src="/images/iamge.png"
+                alt="Who This Program Is For"
+                className="w-full h-auto object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent" />
+
+              {/* Floating Badge */}
+              <motion.div
+                className="absolute top-4 right-4 bg-secondary-bright/90 backdrop-blur-sm rounded-lg px-4 py-2"
+                animate={{ y: [0, -5, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <span className="text-dark font-bold text-sm">FOR YOU</span>
+              </motion.div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

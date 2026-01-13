@@ -24,18 +24,16 @@ export default function JournalPage() {
       <div className="flex gap-2 bg-secondary-bright/10 p-1 rounded-lg w-fit">
         <button
           onClick={() => setView('calendar')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${
-            view === 'calendar' ? 'bg-secondary-bright text-dark shadow-sm' : 'text-gray-300'
-          }`}
+          className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${view === 'calendar' ? 'bg-secondary-bright text-dark shadow-sm' : 'text-gray-300'
+            }`}
         >
           <Calendar className="h-4 w-4" />
           Calendar View
         </button>
         <button
           onClick={() => setView('list')}
-          className={`px-4 py-2 rounded-md transition-colors ${
-            view === 'list' ? 'bg-secondary-bright text-dark shadow-sm' : 'text-gray-300'
-          }`}
+          className={`px-4 py-2 rounded-md transition-colors ${view === 'list' ? 'bg-secondary-bright text-dark shadow-sm' : 'text-gray-300'
+            }`}
         >
           List View
         </button>
@@ -46,14 +44,30 @@ export default function JournalPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-secondary-bright/5 rounded-lg border-2 border-secondary-bright/20 p-8"
+          transition={{ duration: 0.6 }}
+          className="relative overflow-hidden rounded-2xl border-2 border-secondary-bright/30 shadow-2xl"
         >
-          <div className="text-center text-gray-400 py-12">
-            <Calendar className="h-16 w-16 mx-auto mb-4 text-secondary-bright/50" />
-            <p className="text-lg font-medium mb-2">Monthly Calendar View</p>
-            <p className="text-sm">Color coded profit/loss days</p>
-            <p className="text-xs mt-2 text-gray-500">Similar to TraderWaves.com</p>
-          </div>
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.3 }}
+            className="relative"
+          >
+            <img
+              src="/images/download-3.jpg"
+              alt="Futuristic Trading Journal Calendar"
+              className="w-full h-auto object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent" />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="absolute bottom-0 left-0 right-0 p-6"
+            >
+              <p className="text-lg font-semibold text-white mb-1">Monthly Calendar View</p>
+              <p className="text-sm text-secondary-bright">Color coded profit/loss days with holographic visualization</p>
+            </motion.div>
+          </motion.div>
         </motion.div>
       )}
 
