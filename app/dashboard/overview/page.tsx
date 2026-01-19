@@ -1,5 +1,4 @@
 'use client'
-
 import { motion } from 'framer-motion'
 import { TrendingUp, DollarSign, BarChart3, Calendar } from 'lucide-react'
 
