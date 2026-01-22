@@ -54,8 +54,8 @@ export default function CalendarJournaling() {
     .filter(d => d?.hasTraded)
     .reduce((sum, d) => sum + (d?.profit || 0), 0)
 
-  const winningDays = calendarData.filter(d => d?.profit > 0).length
-  const losingDays = calendarData.filter(d => d?.profit < 0).length
+  const winningDays = calendarData.filter(d => d && d.profit > 0).length
+  const losingDays = calendarData.filter(d => d && d.profit < 0).length
   const winRate = winningDays + losingDays > 0
     ? ((winningDays / (winningDays + losingDays)) * 100).toFixed(1)
     : 0
@@ -227,19 +227,19 @@ export default function CalendarJournaling() {
                     transition-all duration-300 relative text-xs
                     ${!dayData ? 'invisible' : ''}
                     ${!dayData?.hasTraded ? 'bg-gray-800/30 border border-gray-700/30' : ''}
-                    ${dayData?.profit > 0 ? 'bg-secondary-bright/20 border-2 border-secondary-bright/60' : ''}
-                    ${dayData?.profit < 0 ? 'bg-red-500/20 border-2 border-red-500/60' : ''}
-                    ${dayData?.profit === 0 && dayData?.hasTraded ? 'bg-gray-600/20 border-2 border-gray-500/60' : ''}
+                    ${(dayData?.profit ?? 0) > 0 ? 'bg-secondary-bright/20 border-2 border-secondary-bright/60' : ''}
+                    ${(dayData?.profit ?? 0) < 0 ? 'bg-red-500/20 border-2 border-red-500/60' : ''}
+                    ${(dayData?.profit ?? 0) === 0 && dayData?.hasTraded ? 'bg-gray-600/20 border-2 border-gray-500/60' : ''}
                   `}
                 >
                   {dayData && (
                     <>
                       <div className="text-white font-bold text-xs">{dayData.day}</div>
                       {dayData.hasTraded && (
-                        <div className={`text-[10px] font-semibold ${dayData.profit > 0 ? 'text-secondary-bright' :
-                          dayData.profit < 0 ? 'text-red-400' : 'text-gray-400'
+                        <div className={`text-[10px] font-semibold ${(dayData.profit ?? 0) > 0 ? 'text-secondary-bright' :
+                          (dayData.profit ?? 0) < 0 ? 'text-red-400' : 'text-gray-400'
                           }`}>
-                          ${Math.abs(dayData.profit).toFixed(0)}
+                          ${Math.abs(dayData.profit ?? 0).toFixed(0)}
                         </div>
                       )}
                     </>

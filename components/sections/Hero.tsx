@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Sparkles, TrendingUp, Users } from 'lucide-react'
 import ParticleBackground from '../animations/ParticleBackground'
@@ -173,9 +174,11 @@ export default function Hero() {
                 whileHover={{ scale: 1.02, rotate: 1 }}
                 transition={{ duration: 0.4 }}
               >
-                <img
+                <Image
                   src="/images/brandkit/QM brand_pages-to-jpg-0007.jpg"
                   alt="Quantum Mastery Dashboard"
+                  width={800}
+                  height={600}
                   className="w-full h-auto object-cover"
                 />
 

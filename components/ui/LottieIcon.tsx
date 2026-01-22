@@ -1,7 +1,7 @@
 'use client'
 
-import Lottie from 'lottie-react'
-import { useState } from 'react'
+import Lottie, { LottieRefCurrentProps } from 'lottie-react'
+import { useState, useRef } from 'react'
 
 interface LottieIconProps {
     animationData: any
@@ -19,19 +19,19 @@ export default function LottieIcon({
     hoverPlay = true,
 }: LottieIconProps) {
     const [isHovered, setIsHovered] = useState(false)
-    const [lottieRef, setLottieRef] = useState<any>(null)
+    const lottieInstanceRef = useRef<LottieRefCurrentProps>(null)
 
     const handleMouseEnter = () => {
         setIsHovered(true)
-        if (hoverPlay && lottieRef) {
-            lottieRef.goToAndPlay(0, true)
+        if (hoverPlay && lottieInstanceRef.current) {
+            lottieInstanceRef.current.goToAndPlay(0, true)
         }
     }
 
     const handleMouseLeave = () => {
         setIsHovered(false)
-        if (hoverPlay && lottieRef && !loop) {
-            lottieRef.goToAndStop(0, true)
+        if (hoverPlay && lottieInstanceRef.current && !loop) {
+            lottieInstanceRef.current.goToAndStop(0, true)
         }
     }
 
@@ -42,7 +42,7 @@ export default function LottieIcon({
             onMouseLeave={handleMouseLeave}
         >
             <Lottie
-                lottieRef={setLottieRef}
+                lottieRef={lottieInstanceRef}
                 animationData={animationData}
                 loop={loop || isHovered}
                 autoplay={autoplay || (hoverPlay && isHovered)}

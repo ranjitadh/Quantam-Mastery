@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import AnimatedBackground from '../animations/AnimatedBackground'
 import WaveBackground from '../animations/WaveBackground'
@@ -94,10 +95,11 @@ export default function DashboardFeatures() {
                   transition={{ delay: 0.4 }}
                   whileHover={{ scale: 1.02 }}
                 >
-                  <img
+                  <Image
                     src="/images/download-4.png"
                     alt={`${activeTab} Dashboard Preview`}
-                    className="w-full h-96 object-cover"
+                    fill
+                    className="object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent" />
 

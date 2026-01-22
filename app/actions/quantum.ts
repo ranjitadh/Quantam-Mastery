@@ -12,7 +12,7 @@ export async function submitQuantumCompletion(quantumId: string, reflection: str
     }
 
     try {
-        await QuantumService.completeQuantum(session.user.id, quantumId, reflection)
+        await QuantumService.completeQuantum(session.user.id, quantumId, { reflection })
         revalidatePath('/dashboard')
         revalidatePath(`/dashboard/program/quantum/${quantumId}`)
         return { success: true }

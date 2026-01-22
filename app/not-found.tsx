@@ -41,7 +41,7 @@ export default function NotFound() {
                         Signal Lost in the <span className="text-secondary-bright">Quantum Realm</span>
                     </h1>
                     <p className="text-gray-400 text-lg mb-10 max-w-lg mx-auto">
-                        The page you're looking for seems to have drifted into an alternate dimension. Let's get you back on course.
+                        The page you&apos;re looking for seems to have drifted into an alternate dimension. Let&apos;s get you back on course.
                     </p>
 
                     <Link

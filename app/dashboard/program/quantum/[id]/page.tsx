@@ -101,7 +101,7 @@ export default async function QuantumPage({ params }: { params: { id: string } }
                 prompt={quantum.reflectionPrompt}
                 actionRequired={quantum.actionRequired}
                 isCompleted={isCompleted}
-                nextQuantumId={nextQuantumId}
+                nextQuantumId={nextQuantumId ?? null}
                 previousCompletion={completion}
             />
         </div>

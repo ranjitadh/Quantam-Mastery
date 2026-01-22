@@ -21,10 +21,12 @@ export async function POST(request: Request) {
         const body = completeSchema.parse(json);
 
         // Verify access before completion (double check)
-        const canAccess = await QuantumService.canAccessQuantum(
+        // Verify access before completion (double check)
+        const status = await QuantumService.getQuantumWithStatus(
             session.user.id,
             body.quantumId
         );
+        const canAccess = status?.canAccess || false;
 
         if (!canAccess) {
             return new NextResponse("You do not have access to complete this Quantum", {

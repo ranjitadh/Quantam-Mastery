@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import { Copy, Plus, Link2 } from 'lucide-react'
 
 export default function TradeCopierPage() {
@@ -28,9 +29,11 @@ export default function TradeCopierPage() {
           transition={{ duration: 0.4 }}
           className="relative"
         >
-          <img
+          <Image
             src="/images/download-2.jpg"
             alt="Futuristic Trade Copier Synchronization"
+            width={800}
+            height={600}
             className="w-full h-auto object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/60 to-transparent" />

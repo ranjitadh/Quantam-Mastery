@@ -141,7 +141,7 @@ export const QuantumService = {
   },
 
   // THE MASTER GATE: Attempt to complete a quantum
-  async completeQuantum(userId: string, quantumId: string, reflection: string) {
+  async completeQuantum(userId: string, quantumId: string, data: { reflection?: string; quizScore?: number }) {
     // 1. Verify this IS the next quantum (No skipping!)
     // We assume default program for now or fetch program from quantum relation if needed.
     // Ideally pass programSlug or infer it.
@@ -164,9 +164,10 @@ export const QuantumService = {
       throw new Error(`Sequential enforcement: You must complete ${head.currentQuantum.title} first.`)
     }
 
-    // 2. Enforce Reflection
-    if (!reflection || reflection.trim().length < 10) {
-      throw new Error('Reflection is mandatory and must be meaningful (10+ chars).')
+    // 2. Enforce Reflection if provided (Assuming lessons require it, tasks might not)
+    // For now, let's keep it lenient or check type.
+    if (targetQuantum.type === 'LESSON' && (!data.reflection || data.reflection.trim().length < 10)) {
+      throw new Error('Reflection is mandatory for lessons and must be meaningful (10+ chars).')
     }
 
     // 3. Grant Mastery
@@ -174,8 +175,8 @@ export const QuantumService = {
       data: {
         userId,
         quantumId,
-        reflection,
-        quizScore: 100 // Default for now
+        reflection: data.reflection || '',
+        quizScore: data.quizScore || 100 // Default to 100 if simple completion
       }
     })
   }

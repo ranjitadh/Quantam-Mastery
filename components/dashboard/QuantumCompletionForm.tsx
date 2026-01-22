@@ -79,7 +79,7 @@ export default function QuantumCompletionForm({
                 {previousCompletion?.reflection && (
                     <div className="bg-dark/50 p-4 rounded border border-white/5 mb-6">
                         <p className="text-xs text-gray-500 uppercase tracking-widest mb-2">Your Reflection</p>
-                        <p className="text-gray-300 italic">"{previousCompletion.reflection}"</p>
+                        <p className="text-gray-300 italic">&quot;{previousCompletion.reflection}&quot;</p>
                     </div>
                 )}
 

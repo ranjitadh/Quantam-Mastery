@@ -78,7 +78,7 @@ export default function DashboardOverviewPage() {
                 Dashboard Overview
               </h1>
               <p className="text-gray-400 text-lg">
-                Welcome back! Here's your trading performance summary.</p>
+                Welcome back! Here&apos;s your trading performance summary.</p>
             </div>
             <motion.div
               animate={{ rotate: [0, 10, -10, 0] }}

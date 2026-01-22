@@ -25,7 +25,6 @@ export async function getDashboardSummary() {
                 type: true,
                 entryPrice: true,
                 exitPrice: true,
-                volume: false, // Ensure this field exists if used, assuming quantity
                 quantity: true,
                 status: true,
                 profitLoss: true,
