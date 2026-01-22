@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { TrendingUp, DollarSign, BarChart3, Calendar, Plus, BookOpen, Eye } from 'lucide-react'
 import StatsCard from '@/components/dashboard/StatsCard'
 import PremiumCard from '@/components/ui/PremiumCard'
+import CurrentQuantumWidget from '@/components/dashboard/CurrentQuantumWidget'
 import Link from 'next/link'
 
 const stats = [
@@ -190,43 +191,7 @@ export default function DashboardOverviewPage() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.7 }}
         >
-          <PremiumCard variant="luxury" className="p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-white">Learning Progress</h2>
-              <Link href="/dashboard/course" className="text-sm text-secondary-bright hover:text-secondary-light transition-colors flex items-center gap-1">
-                Continue
-                <Eye className="w-4 h-4" />
-              </Link>
-            </div>
-
-            <div className="space-y-6">
-              {[
-                { title: 'Technical Analysis Basics', progress: 75 },
-                { title: 'Risk Management', progress: 45 },
-                { title: 'Trading Psychology', progress: 30 },
-              ].map((course, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 + i * 0.1 }}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-white font-medium text-sm">{course.title}</p>
-                    <span className="text-secondary-bright text-sm font-semibold">{course.progress}%</span>
-                  </div>
-                  <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${course.progress}%` }}
-                      transition={{ delay: 0.9 + i * 0.1, duration: 1, ease: 'easeOut' }}
-                      className="h-full bg-gradient-to-r from-secondary-bright to-secondary-light rounded-full"
-                    />
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </PremiumCard>
+          <CurrentQuantumWidget />
         </motion.div>
       </div>
     </div>
