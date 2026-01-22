@@ -41,13 +41,7 @@ export default function BrandEssence() {
           className="relative"
         >
           {/* Glassmorphism Container */}
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
-              backdropFilter: 'blur(10px)',
-              border: '2px solid rgba(192, 245, 61, 0.2)',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1) inset'
-            }}
+          <div className="relative  overflow-hidden"
           >
             {/* Image */}
             <div className="relative w-full aspect-[16/9] md:aspect-[21/9]">
@@ -55,12 +49,12 @@ export default function BrandEssence() {
                 src="/images/QM brand_pages-to-jpg-0009.jpg"
                 alt="Brand Essence - Vision Statement"
                 fill
-                className="object-cover"
+                className="object-contain rounded-3xl"
                 priority
               />
 
               {/* Subtle Gradient Overlay for depth */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+              <div className=""></div>
             </div>
 
             {/* Shimmer Effect */}

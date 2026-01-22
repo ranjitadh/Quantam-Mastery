@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { signOut } from 'next-auth/react'
 import { motion } from 'framer-motion'
 import {
   LayoutDashboard,
@@ -122,10 +123,7 @@ export default function DashboardSidebar() {
         </Link>
 
         <button
-          onClick={() => {
-            // Add logout logic here
-            console.log('Logout clicked')
-          }}
+          onClick={() => signOut({ callbackUrl: '/login' })}
           className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-all duration-300 border-2 border-transparent hover:border-red-500/20 group"
         >
           <LogOut className="h-5 w-5 transition-transform group-hover:-translate-x-1" />

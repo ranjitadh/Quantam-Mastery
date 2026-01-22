@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch, Control } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'react-hot-toast'
@@ -26,12 +26,12 @@ export default function LoginForm() {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
+    control,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   })
 
-  const watchedValues = watch()
+
 
   const onSubmit = async (data: LoginFormData) => {
     setIsSubmitting(true)
@@ -56,20 +56,35 @@ export default function LoginForm() {
     }
   }
 
+  // Moved FormField outside to prevent re-renders losing focus
   const FormField = ({
     name,
     label,
     type = 'text',
     placeholder,
-    icon: Icon
+    icon: Icon,
+    register,
+    errors,
+    control,
+    focusedField,
+    setFocusedField
   }: {
     name: keyof LoginFormData
     label: string
     type?: string
     placeholder: string
     icon: any
+    register: any
+    errors: any
+    control: Control<LoginFormData>
+    focusedField: string | null
+    setFocusedField: (field: string | null) => void
   }) => {
-    const hasValue = watchedValues[name] && watchedValues[name].length > 0
+    const fieldValue = useWatch({
+      control,
+      name
+    })
+    const hasValue = fieldValue && fieldValue.length > 0
     const hasError = errors[name]
     const isFocused = focusedField === name
 
@@ -90,7 +105,10 @@ export default function LoginForm() {
             type={type}
             id={name}
             onFocus={() => setFocusedField(name)}
-            onBlur={() => setFocusedField(null)}
+            onBlur={(e: any) => {
+              register(name).onBlur(e)
+              setFocusedField(null)
+            }}
             className={`
               w-full pl-12 pr-4 py-4 
               bg-white/5 backdrop-blur-sm
@@ -186,6 +204,11 @@ export default function LoginForm() {
             type="email"
             placeholder="john@example.com"
             icon={Mail}
+            register={register}
+            errors={errors}
+            control={control}
+            focusedField={focusedField}
+            setFocusedField={setFocusedField}
           />
 
           <FormField
@@ -194,6 +217,11 @@ export default function LoginForm() {
             type="password"
             placeholder="••••••••"
             icon={Lock}
+            register={register}
+            errors={errors}
+            control={control}
+            focusedField={focusedField}
+            setFocusedField={setFocusedField}
           />
         </div>
 
