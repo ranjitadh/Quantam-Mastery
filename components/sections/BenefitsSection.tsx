@@ -5,6 +5,7 @@ import AnimatedCard from '../animations/AnimatedCard'
 import AnimatedBackground from '../animations/AnimatedBackground'
 import WaveBackground from '../animations/WaveBackground'
 import ScrollReveal from '../animations/ScrollReveal'
+import PremiumCard from '../ui/PremiumCard'
 
 const benefits = Array.from({ length: 6 }, (_, i) => ({
   id: i + 1,
@@ -37,23 +38,49 @@ export default function BenefitsSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {benefits.map((benefit, index) => (
-            <AnimatedCard
+            <PremiumCard
               key={benefit.id}
-              delay={index * 0.1}
-              className="bg-gradient-to-br from-secondary-bright/10 to-secondary-bright/5 rounded-2xl p-8 border-2 border-secondary-bright/20 backdrop-blur-sm"
+              variant="luxury"
+              glowColor={index % 3 === 0 ? 'lime' : index % 3 === 1 ? 'mint' : 'cyan'}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+              className="p-8 group"
             >
+              {/* Number Badge with Gradient */}
               <motion.div
-                className="text-6xl font-bold text-secondary-bright mb-6"
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
+                className="relative mb-6"
+                initial={{ scale: 0, rotate: -180 }}
+                whileInView={{ scale: 1, rotate: 0 }}
                 viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200, delay: index * 0.1 + 0.2 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 200,
+                  delay: index * 0.1 + 0.2
+                }}
               >
-                {benefit.id}
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-secondary-bright to-secondary-light shadow-lg shadow-secondary-bright/30">
+                  <span className="text-4xl font-bold text-dark-black">
+                    {benefit.id}
+                  </span>
+                </div>
+
+                {/* Decorative Ring */}
+                <div className="absolute inset-0 w-20 h-20 rounded-2xl border-2 border-secondary-bright/30 animate-pulse-slow" />
               </motion.div>
-              <h3 className="text-xl font-bold text-white mb-3">{benefit.title}</h3>
-              <p className="text-gray-300 leading-relaxed">{benefit.description}</p>
-            </AnimatedCard>
+
+              {/* Content */}
+              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-secondary-bright transition-colors">
+                {benefit.title}
+              </h3>
+              <p className="text-gray-300 leading-relaxed">
+                {benefit.description}
+              </p>
+
+              {/* Bottom Accent Line */}
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-secondary-bright/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </PremiumCard>
           ))}
         </div>
       </div>

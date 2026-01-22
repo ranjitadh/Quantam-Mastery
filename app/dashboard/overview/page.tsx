@@ -1,155 +1,232 @@
 'use client'
+
 import { motion } from 'framer-motion'
-import { TrendingUp, DollarSign, BarChart3, Calendar } from 'lucide-react'
+import { TrendingUp, DollarSign, BarChart3, Calendar, Plus, BookOpen, Eye } from 'lucide-react'
+import StatsCard from '@/components/dashboard/StatsCard'
+import PremiumCard from '@/components/ui/PremiumCard'
+import Link from 'next/link'
 
 const stats = [
   {
     name: 'Total Trades',
-    value: '0',
+    value: '24',
     icon: BarChart3,
-    change: '+0%',
-    changeType: 'neutral' as const,
+    change: '+12%',
+    changeType: 'positive' as const,
   },
   {
     name: 'Win Rate',
-    value: '0%',
+    value: '68%',
     icon: TrendingUp,
-    change: '+0%',
+    change: '+5%',
     changeType: 'positive' as const,
   },
   {
     name: 'Total P&L',
-    value: '$0.00',
+    value: '$12,450',
     icon: DollarSign,
-    change: '+0%',
-    changeType: 'neutral' as const,
+    change: '+18%',
+    changeType: 'positive' as const,
   },
   {
-    name: 'Active Journal Entries',
-    value: '0',
+    name: 'Journal Entries',
+    value: '18',
     icon: Calendar,
-    change: '+0',
+    change: '+3',
     changeType: 'positive' as const,
+  },
+]
+
+const quickActions = [
+  {
+    title: 'Add New Trade',
+    description: 'Record your latest trading activity',
+    icon: Plus,
+    href: '/dashboard/trades/new',
+    color: 'from-secondary-bright to-secondary-light',
+  },
+  {
+    title: 'Create Journal Entry',
+    description: 'Document your trading insights',
+    icon: BookOpen,
+    href: '/dashboard/journal/new',
+    color: 'from-primary-cyan to-blue-500',
+  },
+  {
+    title: 'View Calendar',
+    description: 'Check your trading schedule',
+    icon: Calendar,
+    href: '/dashboard/calendar',
+    color: 'from-purple-500 to-pink-500',
   },
 ]
 
 export default function DashboardOverviewPage() {
   return (
-    <div className="space-y-6">
-      {/* Futuristic Hero Image */}
+    <div className="space-y-8 max-w-7xl">
+      {/* Welcome Header */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative overflow-hidden rounded-2xl border-2 border-secondary-bright/30 shadow-2xl"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative overflow-hidden rounded-2xl"
       >
-        <div className="relative h-[300px] lg:h-[400px]">
-          <motion.img
-            src="/images/download.jpg"
-            alt="Futuristic Trading Dashboard"
-            className="w-full h-full object-cover"
-            initial={{ scale: 1.1 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent" />
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="absolute bottom-0 left-0 right-0 p-8"
-          >
-            <h1 className="text-4xl lg:text-5xl font-bold text-white mb-2 drop-shadow-lg">
-              Dashboard Overview
-            </h1>
-            <p className="text-lg text-secondary-bright drop-shadow-md">
-              Welcome back! Here&apos;s your trading performance summary.
-            </p>
-          </motion.div>
-        </div>
+        <PremiumCard variant="gradient" className="p-8" glowColor="lime">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent mb-2">
+                Dashboard Overview
+              </h1>
+              <p className="text-gray-400 text-lg">
+                Welcome back! Here's your trading performance summary.</p>
+            </div>
+            <motion.div
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+              className="text-6xl"
+            >
+              📊
+            </motion.div>
+          </div>
+        </PremiumCard>
       </motion.div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, index) => (
-          <motion.div
-            key={stat.name}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            whileHover={{
-              scale: 1.05,
-              boxShadow: "0 0 30px rgba(192, 245, 61, 0.3)",
-              borderColor: "rgba(192, 245, 61, 0.6)"
-            }}
-            className="bg-secondary-bright/5 rounded-lg p-6 border-2 border-secondary-bright/20 shadow-sm cursor-pointer transition-all duration-300"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-300">{stat.name}</p>
-                <motion.p
-                  className="text-2xl font-bold text-white mt-2"
-                  initial={{ scale: 0.9 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: index * 0.1 + 0.3, type: "spring", stiffness: 200 }}
-                >
-                  {stat.value}
-                </motion.p>
-                <p className={`text-sm mt-2 ${stat.changeType === 'positive' ? 'text-secondary-bright' :
-                  stat.changeType === 'neutral' ? 'text-gray-400' : 'text-gray-400'
-                  }`}>
-                  {stat.change}
-                </p>
-              </div>
-              <motion.div
-                className={`p-3 rounded-lg ${stat.changeType === 'positive' ? 'bg-secondary-bright/20' :
-                  stat.changeType === 'neutral' ? 'bg-secondary-bright/5' : 'bg-secondary-bright/5'
-                  }`}
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
-              >
-                <stat.icon className={`h-6 w-6 ${stat.changeType === 'positive' ? 'text-secondary-bright' :
-                  stat.changeType === 'neutral' ? 'text-gray-400' : 'text-gray-400'
-                  }`} />
-              </motion.div>
-            </div>
-          </motion.div>
-        ))}
+      <div>
+        <h2 className="text-2xl font-bold text-white mb-4">Performance Metrics</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {stats.map((stat, index) => (
+            <StatsCard
+              key={stat.name}
+              {...stat}
+              delay={index * 0.1}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Quick Actions */}
+      <div>
+        <h2 className="text-2xl font-bold text-white mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {quickActions.map((action, index) => (
+            <motion.div
+              key={action.title}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 + index * 0.1 }}
+            >
+              <Link href={action.href}>
+                <PremiumCard
+                  variant="luxury"
+                  hoverable={true}
+                  className="p-6 cursor-pointer group"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className={`p-3 rounded-xl bg-gradient-to-br ${action.color} shadow-lg`}>
+                      <action.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-secondary-bright transition-colors">
+                        {action.title}
+                      </h3>
+                      <p className="text-sm text-gray-400">{action.description}</p>
+                    </div>
+                  </div>
+                </PremiumCard>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Activity Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Recent Activity */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="bg-secondary-bright/5 rounded-lg p-6 border-2 border-secondary-bright/20"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.6 }}
         >
-          <h2 className="text-xl font-semibold text-white mb-4">Quick Actions</h2>
-          <div className="space-y-3">
-            <button className="w-full text-left px-4 py-3 bg-secondary-bright/10 hover:bg-secondary-bright/20 rounded-md transition-colors text-gray-300 hover:text-white">
-              Add New Trade
-            </button>
-            <button className="w-full text-left px-4 py-3 bg-secondary-bright/10 hover:bg-secondary-bright/20 rounded-md transition-colors text-gray-300 hover:text-white">
-              Create Journal Entry
-            </button>
-            <button className="w-full text-left px-4 py-3 bg-secondary-bright/10 hover:bg-secondary-bright/20 rounded-md transition-colors text-gray-300 hover:text-white">
-              View Calendar
-            </button>
-          </div>
+          <PremiumCard variant="luxury" className="p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold text-white">Recent Activity</h2>
+              <Link href="/dashboard/activity" className="text-sm text-secondary-bright hover:text-secondary-light transition-colors flex items-center gap-1">
+                View All
+                <Eye className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="space-y-4">
+              {[
+                { type: 'Trade', desc: 'EUR/USD Long Position', time: '2 hours ago', profit: '+$125' },
+                { type: 'Journal', desc: 'Market Analysis Entry', time: '5 hours ago', profit: null },
+                { type: 'Trade', desc: 'GBP/JPY Short Position', time: '1 day ago', profit: '-$45' },
+              ].map((activity, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 + i * 0.1 }}
+                  className="flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-white/10"
+                >
+                  <div>
+                    <p className="text-white font-medium">{activity.desc}</p>
+                    <p className="text-xs text-gray-400 mt-1">{activity.time}</p>
+                  </div>
+                  {activity.profit && (
+                    <span className={`text-sm font-semibold ${activity.profit.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
+                      {activity.profit}
+                    </span>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          </PremiumCard>
         </motion.div>
 
+        {/* Learning Progress */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="bg-secondary-bright/5 rounded-lg p-6 border-2 border-secondary-bright/20"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.7 }}
         >
-          <h2 className="text-xl font-semibold text-white mb-4">Recent Activity</h2>
-          <div className="text-center py-8 text-gray-400">
-            <p>No recent activity</p>
-            <p className="text-sm mt-2">Start trading to see your activity here</p>
-          </div>
+          <PremiumCard variant="luxury" className="p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold text-white">Learning Progress</h2>
+              <Link href="/dashboard/course" className="text-sm text-secondary-bright hover:text-secondary-light transition-colors flex items-center gap-1">
+                Continue
+                <Eye className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="space-y-6">
+              {[
+                { title: 'Technical Analysis Basics', progress: 75 },
+                { title: 'Risk Management', progress: 45 },
+                { title: 'Trading Psychology', progress: 30 },
+              ].map((course, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 + i * 0.1 }}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-white font-medium text-sm">{course.title}</p>
+                    <span className="text-secondary-bright text-sm font-semibold">{course.progress}%</span>
+                  </div>
+                  <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${course.progress}%` }}
+                      transition={{ delay: 0.9 + i * 0.1, duration: 1, ease: 'easeOut' }}
+                      className="h-full bg-gradient-to-r from-secondary-bright to-secondary-light rounded-full"
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </PremiumCard>
         </motion.div>
       </div>
     </div>
