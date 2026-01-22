@@ -86,8 +86,8 @@ export default function Testimonials() {
               <h3 className="text-3xl font-bold text-white mb-2">Khan Hazara</h3>
               <p className="text-xl text-secondary-bright font-semibold mb-2">Founder of Quantum Trading Mastery</p>
               <p className="text-gray-300 leading-relaxed">
-                "I created this platform to give traders the tools and education I wish I had when I started.
-                Every feature is designed from real trading experience."
+                &quot;I created this platform to give traders the tools and education I wish I had when I started.
+                Every feature is designed from real trading experience.&quot;
               </p>
             </div>
           </div>
@@ -126,7 +126,7 @@ export default function Testimonials() {
 
               {/* Testimonial Text */}
               <p className="text-gray-300 leading-relaxed mb-6 italic">
-                "{testimonial.text}"
+                &quot;{testimonial.text}&quot;
               </p>
 
               {/* Profit Badge */}

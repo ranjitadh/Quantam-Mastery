@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/prisma'
 
+export class QuantumError extends Error { }
+
 export const QuantumService = {
   // FIND THE EDGE: Where is the user currently at?
   async getUserCurrentHead(userId: string, programSlug: string) {
