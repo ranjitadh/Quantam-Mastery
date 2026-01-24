@@ -10,6 +10,7 @@ import TradeEntryForm from '@/components/dashboard/TradeEntryForm'
 import { createTrade, getTrades, deleteTrade, getQuantumsSimple, CreateTradeData } from '@/app/actions/journal'
 import { toast } from 'react-hot-toast'
 import { TradeType, TradeResult } from '@prisma/client'
+import { useSearchParams } from 'next/navigation'
 
 // Types matching the Prisma model for UI
 interface Trade {
@@ -32,6 +33,7 @@ const EMOTION_TAGS = ['confident', 'anxious', 'patient', 'revenge', 'fomo', 'cal
 const SETUP_TAGS = ['breakout', 'reversal', 'continuation', 'support/resistance', 'news']
 
 export default function JournalPage() {
+  const searchParams = useSearchParams()
   const [view, setView] = useState<'calendar' | 'list'>('list')
   const [showNewEntryModal, setShowNewEntryModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -39,6 +41,12 @@ export default function JournalPage() {
   const [trades, setTrades] = useState<Trade[]>([])
   const [quantums, setQuantums] = useState<{ id: string, title: string, module: { title: string } }[]>([])
   const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (searchParams.get('action') === 'new') {
+      setShowNewEntryModal(true)
+    }
+  }, [searchParams])
 
   // Form State
   const [formData, setFormData] = useState<Partial<CreateTradeData>>({

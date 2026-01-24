@@ -48,7 +48,7 @@ export default function Testimonials() {
                   <Star key={i} className="w-4 h-4 text-green-primary fill-green-primary" />
                 ))}
               </div>
-              <p className="text-text-secondary mb-6 leading-relaxed italic">"{t.content}"</p>
+              <p className="text-text-secondary mb-6 leading-relaxed italic">&quot;{t.content}&quot;</p>
               <div>
                 <div className="font-bold text-white">{t.name}</div>
                 <div className="text-xs text-text-muted">{t.role}</div>

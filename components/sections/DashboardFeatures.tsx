@@ -44,7 +44,7 @@ export default function DashboardFeatures() { // Renamed conceptually to "Featur
       <div className="text-center mb-20 max-w-3xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-bold mb-6">Everything You Need to <span className="text-green-primary">Succeed</span></h2>
         <p className="text-text-secondary text-lg">
-          We've stripped away the noise and focused on the six pillars of trading mastery.
+          We&apos;ve stripped away the noise and focused on the six pillars of trading mastery.
         </p>
       </div>
 

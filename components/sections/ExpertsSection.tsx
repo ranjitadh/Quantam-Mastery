@@ -46,10 +46,10 @@ export default function ExpertsSection() {
 
           <div className="space-y-6 text-text-secondary text-lg leading-relaxed">
             <p>
-              "I didn't start with a silver spoon. I built my edge through thousands of hours of chart time, analyzing failures, and refining a system that actually works in live conditions."
+              &quot;I didn&apos;t start with a silver spoon. I built my edge through thousands of hours of chart time, analyzing failures, and refining a system that actually works in live conditions.&quot;
             </p>
             <p>
-              Quantum Mastery isn't just a course—it's the mentorship I wish I had when I started. We focus on the two things that matter most: <strong className="text-white">Capital Protection</strong> and <strong className="text-white">Asymmetric Upside</strong>.
+              Quantum Mastery isn&apos;t just a course—it&apos;s the mentorship I wish I had when I started. We focus on the two things that matter most: <strong className="text-white">Capital Protection</strong> and <strong className="text-white">Asymmetric Upside</strong>.
             </p>
           </div>
 

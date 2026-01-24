@@ -1,9 +1,9 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { TrendingUp, DollarSign, BarChart3, Calendar, Plus, BookOpen, Eye } from 'lucide-react'
+import { TrendingUp, DollarSign, BarChart3, Calendar, Plus, BookOpen } from 'lucide-react'
 import StatsCard from '@/components/dashboard/StatsCard'
-import { Card } from '@/components/ui/Card' // Using new Card
+import { Card } from '@/components/ui/Card'
 import CurrentQuantumWidget from '@/components/dashboard/CurrentQuantumWidget'
 import Link from 'next/link'
 
@@ -43,7 +43,7 @@ const quickActions = [
     title: 'Add New Trade',
     description: 'Record your latest trading activity',
     icon: Plus,
-    href: '/dashboard/journal', // Redirect to Journal directly if "New Trade" page doesn't exist
+    href: '/dashboard/journal?action=new',
     color: 'text-green-primary bg-green-primary/10 border-green-primary/20',
   },
   {
@@ -106,37 +106,37 @@ export default function DashboardOverviewPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Quick Actions - Takes up 2 columns */}
         <div className="lg:col-span-2 space-y-6">
-             <h2 className="text-2xl font-bold text-white">Quick Actions</h2>
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-               {quickActions.map((action, index) => (
-                 <motion.div
-                   key={action.title}
-                   initial={{ opacity: 0, scale: 0.95 }}
-                   animate={{ opacity: 1, scale: 1 }}
-                   transition={{ delay: 0.4 + index * 0.1 }}
-                 >
-                   <Link href={action.href}>
-                     <Card className="p-6 cursor-pointer group hover:border-green-primary/50 transition-colors h-full flex flex-col justify-center">
-                       <div className="flex items-center gap-4 mb-3">
-                         <div className={`p-3 rounded-xl border ${action.color}`}>
-                           <action.icon className="w-6 h-6" />
-                         </div>
-                         <h3 className="text-lg font-bold text-white group-hover:text-green-primary transition-colors">
-                           {action.title}
-                         </h3>
-                       </div>
-                       <p className="text-sm text-text-secondary">{action.description}</p>
-                     </Card>
-                   </Link>
-                 </motion.div>
-               ))}
-            </div>
+          <h2 className="text-2xl font-bold text-white">Quick Actions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {quickActions.map((action, index) => (
+              <motion.div
+                key={action.title}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4 + index * 0.1 }}
+              >
+                <Link href={action.href}>
+                  <Card className="p-6 cursor-pointer group hover:border-green-primary/50 transition-colors h-full flex flex-col justify-center">
+                    <div className="flex items-center gap-4 mb-3">
+                      <div className={`p-3 rounded-xl border ${action.color}`}>
+                        <action.icon className="w-6 h-6" />
+                      </div>
+                      <h3 className="text-lg font-bold text-white group-hover:text-green-primary transition-colors">
+                        {action.title}
+                      </h3>
+                    </div>
+                    <p className="text-sm text-text-secondary">{action.description}</p>
+                  </Card>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         {/* Learning Progress - Takes up 1 column */}
         <div className="lg:col-span-1">
-             <h2 className="text-2xl font-bold text-white mb-6">Learning Path</h2>
-             <CurrentQuantumWidget />
+          <h2 className="text-2xl font-bold text-white mb-6">Learning Path</h2>
+          <CurrentQuantumWidget />
         </div>
       </div>
     </div>

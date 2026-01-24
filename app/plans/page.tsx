@@ -1,4 +1,4 @@
-'use client'
+import type { Metadata } from 'next'
 
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
@@ -7,7 +7,7 @@ import FAQs from '@/components/sections/FAQs'
 import { Section } from '@/components/ui/Section'
 import { Check } from 'lucide-react'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Pricing Plans - Quantum Mastery',
   description: 'Choose the perfect plan for your trading journey. Free plan with unlimited journaling, Pro Trader, Elite Trader, or Mastery Circle mentorship.',
 }
