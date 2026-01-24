@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { TrendingUp, DollarSign, BarChart3, Calendar, Plus, BookOpen, Eye } from 'lucide-react'
 import StatsCard from '@/components/dashboard/StatsCard'
-import PremiumCard from '@/components/ui/PremiumCard'
+import { Card } from '@/components/ui/Card' // Using new Card
 import CurrentQuantumWidget from '@/components/dashboard/CurrentQuantumWidget'
 import Link from 'next/link'
 
@@ -43,52 +43,49 @@ const quickActions = [
     title: 'Add New Trade',
     description: 'Record your latest trading activity',
     icon: Plus,
-    href: '/dashboard/trades/new',
-    color: 'from-secondary-bright to-secondary-light',
+    href: '/dashboard/journal', // Redirect to Journal directly if "New Trade" page doesn't exist
+    color: 'text-green-primary bg-green-primary/10 border-green-primary/20',
   },
   {
     title: 'Create Journal Entry',
     description: 'Document your trading insights',
     icon: BookOpen,
-    href: '/dashboard/journal/new',
-    color: 'from-primary-cyan to-blue-500',
+    href: '/dashboard/journal',
+    color: 'text-blue-400 bg-blue-500/10 border-blue-500/20',
   },
   {
     title: 'View Calendar',
     description: 'Check your trading schedule',
     icon: Calendar,
     href: '/dashboard/calendar',
-    color: 'from-purple-500 to-pink-500',
+    color: 'text-purple-400 bg-purple-500/10 border-purple-500/20',
   },
 ]
 
 export default function DashboardOverviewPage() {
   return (
-    <div className="space-y-8 max-w-7xl">
+    <div className="space-y-8 max-w-7xl mx-auto">
       {/* Welcome Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-2xl"
       >
-        <PremiumCard variant="gradient" className="p-8" glowColor="lime">
-          <div className="flex items-center justify-between">
+        <Card className="p-8 bg-gradient-to-r from-background-secondary to-background-primary border-green-primary/20 relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-4 opacity-10">
+            <TrendingUp className="w-48 h-48 text-green-primary" />
+          </div>
+
+          <div className="flex items-center justify-between relative z-10">
             <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent mb-2">
+              <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
                 Dashboard Overview
               </h1>
-              <p className="text-gray-400 text-lg">
-                Welcome back! Here&apos;s your trading performance summary.</p>
+              <p className="text-text-secondary text-lg">
+                Welcome back! Here&apos;s your trading performance summary.
+              </p>
             </div>
-            <motion.div
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-              className="text-6xl"
-            >
-              📊
-            </motion.div>
           </div>
-        </PremiumCard>
+        </Card>
       </motion.div>
 
       {/* Stats Grid */}
@@ -105,94 +102,42 @@ export default function DashboardOverviewPage() {
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div>
-        <h2 className="text-2xl font-bold text-white mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {quickActions.map((action, index) => (
-            <motion.div
-              key={action.title}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4 + index * 0.1 }}
-            >
-              <Link href={action.href}>
-                <PremiumCard
-                  variant="luxury"
-                  hoverable={true}
-                  className="p-6 cursor-pointer group"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className={`p-3 rounded-xl bg-gradient-to-br ${action.color} shadow-lg`}>
-                      <action.icon className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-secondary-bright transition-colors">
-                        {action.title}
-                      </h3>
-                      <p className="text-sm text-gray-400">{action.description}</p>
-                    </div>
-                  </div>
-                </PremiumCard>
-              </Link>
-            </motion.div>
-          ))}
+      {/* Main Content Area */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Quick Actions - Takes up 2 columns */}
+        <div className="lg:col-span-2 space-y-6">
+             <h2 className="text-2xl font-bold text-white">Quick Actions</h2>
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+               {quickActions.map((action, index) => (
+                 <motion.div
+                   key={action.title}
+                   initial={{ opacity: 0, scale: 0.95 }}
+                   animate={{ opacity: 1, scale: 1 }}
+                   transition={{ delay: 0.4 + index * 0.1 }}
+                 >
+                   <Link href={action.href}>
+                     <Card className="p-6 cursor-pointer group hover:border-green-primary/50 transition-colors h-full flex flex-col justify-center">
+                       <div className="flex items-center gap-4 mb-3">
+                         <div className={`p-3 rounded-xl border ${action.color}`}>
+                           <action.icon className="w-6 h-6" />
+                         </div>
+                         <h3 className="text-lg font-bold text-white group-hover:text-green-primary transition-colors">
+                           {action.title}
+                         </h3>
+                       </div>
+                       <p className="text-sm text-text-secondary">{action.description}</p>
+                     </Card>
+                   </Link>
+                 </motion.div>
+               ))}
+            </div>
         </div>
-      </div>
 
-      {/* Activity Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Activity */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.6 }}
-        >
-          <PremiumCard variant="luxury" className="p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-white">Recent Activity</h2>
-              <Link href="/dashboard/activity" className="text-sm text-secondary-bright hover:text-secondary-light transition-colors flex items-center gap-1">
-                View All
-                <Eye className="w-4 h-4" />
-              </Link>
-            </div>
-
-            <div className="space-y-4">
-              {[
-                { type: 'Trade', desc: 'EUR/USD Long Position', time: '2 hours ago', profit: '+$125' },
-                { type: 'Journal', desc: 'Market Analysis Entry', time: '5 hours ago', profit: null },
-                { type: 'Trade', desc: 'GBP/JPY Short Position', time: '1 day ago', profit: '-$45' },
-              ].map((activity, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7 + i * 0.1 }}
-                  className="flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-white/10"
-                >
-                  <div>
-                    <p className="text-white font-medium">{activity.desc}</p>
-                    <p className="text-xs text-gray-400 mt-1">{activity.time}</p>
-                  </div>
-                  {activity.profit && (
-                    <span className={`text-sm font-semibold ${activity.profit.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
-                      {activity.profit}
-                    </span>
-                  )}
-                </motion.div>
-              ))}
-            </div>
-          </PremiumCard>
-        </motion.div>
-
-        {/* Learning Progress */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.7 }}
-        >
-          <CurrentQuantumWidget />
-        </motion.div>
+        {/* Learning Progress - Takes up 1 column */}
+        <div className="lg:col-span-1">
+             <h2 className="text-2xl font-bold text-white mb-6">Learning Path</h2>
+             <CurrentQuantumWidget />
+        </div>
       </div>
     </div>
   )

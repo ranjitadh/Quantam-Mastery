@@ -6,7 +6,7 @@ import AnimatedSocialIcon from '../ui/AnimatedSocialIcon'
 
 const footerLinks = {
   about: [
-    { name: 'Features', href: '/features' },
+    { name: 'Features', href: '/#features' },
     { name: 'Pricing', href: '/pricing' },
     { name: 'Case Studies', href: '/case-studies' },
   ],
@@ -31,12 +31,12 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="relative bg-[#0B1120] border-t border-secondary-bright/10 overflow-hidden">
+    <footer className="relative bg-background-secondary border-t border-white/5 overflow-hidden">
       {/* Premium Background Effects */}
       <div className="absolute inset-0 opacity-[0.03]"
         style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.15) 1px, transparent 0)', backgroundSize: '24px 24px' }}>
       </div>
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[1px] bg-gradient-to-r from-transparent via-secondary-bright/50 to-transparent shadow-[0_0_10px_rgba(192,245,61,0.5)]"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[1px] bg-gradient-to-r from-transparent via-green-primary/50 to-transparent shadow-[0_0_10px_rgba(58,255,58,0.5)]"></div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
@@ -65,7 +65,7 @@ export default function Footer() {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-gray-400 hover:text-secondary-bright transition-colors duration-200 text-sm"
+                      className="text-text-secondary hover:text-green-primary transition-colors duration-200 text-sm"
                     >
                       {link.name}
                     </Link>
@@ -84,7 +84,7 @@ export default function Footer() {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-gray-400 hover:text-secondary-bright transition-colors duration-200 text-sm"
+                      className="text-text-secondary hover:text-green-primary transition-colors duration-200 text-sm"
                     >
                       {link.name}
                     </Link>
@@ -103,7 +103,7 @@ export default function Footer() {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-gray-400 hover:text-secondary-bright transition-colors duration-200 text-sm"
+                      className="text-text-secondary hover:text-green-primary transition-colors duration-200 text-sm"
                     >
                       {link.name}
                     </Link>
@@ -125,7 +125,7 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded bg-gray-800/50 hover:bg-gray-700 flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200"
+                  className="w-10 h-10 rounded bg-white/5 hover:bg-white/10 flex items-center justify-center text-text-secondary hover:text-white transition-all duration-200"
                   aria-label={social.name}
                 >
                   <AnimatedSocialIcon type={social.type} className="w-5 h-5" />
@@ -134,7 +134,7 @@ export default function Footer() {
             </div>
 
             {/* Copyright and Links */}
-            <div className="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-xs text-gray-400">
+            <div className="flex flex-col md:flex-row items-center gap-3 md:gap-6 text-xs text-text-muted">
               <span>© {new Date().getFullYear()} Quantum Trading Mastery. All rights reserved.</span>
               <div className="flex items-center gap-4">
                 <Link
@@ -163,10 +163,10 @@ export default function Footer() {
 
           {/* Company Registration Info */}
           <div className="mt-4 text-center">
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-text-muted">
               Quantum Trading Mastery Pvt Ltd – Registered in Nepal and India (Company No. 140732235)
             </p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-text-muted">
               Registered Office: 124 City Road, London, EC1V 2NX, United Kingdom
             </p>
           </div>
@@ -175,3 +175,4 @@ export default function Footer() {
     </footer>
   )
 }
+

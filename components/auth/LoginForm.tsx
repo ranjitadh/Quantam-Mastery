@@ -8,7 +8,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'react-hot-toast'
 import { motion } from 'framer-motion'
-import { Mail, Lock, Check, Chrome } from 'lucide-react'
+import { Mail, Lock, Check } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
+import { Card } from '@/components/ui/Card'
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -30,8 +32,6 @@ export default function LoginForm() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   })
-
-
 
   const onSubmit = async (data: LoginFormData) => {
     setIsSubmitting(true)
@@ -56,7 +56,6 @@ export default function LoginForm() {
     }
   }
 
-  // Moved FormField outside to prevent re-renders losing focus
   const FormField = ({
     name,
     label,
@@ -95,7 +94,7 @@ export default function LoginForm() {
         className="relative"
       >
         <div className="relative">
-          <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${isFocused ? 'text-secondary-bright' : hasError ? 'text-red-400' : 'text-gray-500'
+          <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${isFocused ? 'text-green-primary' : hasError ? 'text-red-500' : 'text-text-muted'
             }`}>
             <Icon className="w-5 h-5" />
           </div>
@@ -111,15 +110,15 @@ export default function LoginForm() {
             }}
             className={`
               w-full pl-12 pr-4 py-4 
-              bg-white/5 backdrop-blur-sm
-              border-2 rounded-xl
-              text-white placeholder:text-transparent
+              bg-background-secondary
+              border rounded-xl
+              text-text-primary placeholder:text-transparent
               transition-all duration-300
-              focus:bg-white/10 focus:outline-none
+              focus:bg-background-secondary/80 focus:outline-none
               ${isFocused
-                ? 'border-secondary-bright shadow-lg shadow-secondary-bright/20'
+                ? 'border-green-primary shadow-[0_0_15px_rgba(58,255,58,0.15)]'
                 : hasError
-                  ? 'border-red-400/50'
+                  ? 'border-red-500/50'
                   : 'border-white/10 hover:border-white/20'
               }
             `}
@@ -132,14 +131,14 @@ export default function LoginForm() {
               absolute left-12 top-1/2 -translate-y-1/2
               pointer-events-none transition-all duration-200
               ${hasValue || isFocused
-                ? 'text-xs -translate-y-8 left-4 font-medium'
+                ? 'text-xs -translate-y-8 left-4 font-bold'
                 : 'text-base'
               }
               ${isFocused
-                ? 'text-secondary-bright'
+                ? 'text-green-primary'
                 : hasError
-                  ? 'text-red-400'
-                  : 'text-gray-400'
+                  ? 'text-red-500'
+                  : 'text-text-secondary'
               }
             `}
           >
@@ -152,7 +151,7 @@ export default function LoginForm() {
               animate={{ scale: 1, opacity: 1 }}
               className="absolute right-4 top-1/2 -translate-y-1/2"
             >
-              <Check className="w-5 h-5 text-green-400" />
+              <Check className="w-5 h-5 text-green-primary" />
             </motion.div>
           )}
         </div>
@@ -176,25 +175,19 @@ export default function LoginForm() {
       onSubmit={handleSubmit(onSubmit)}
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="space-y-6 relative"
+      className="relative z-10 w-full"
     >
-      <div className="
-        bg-gradient-to-br from-white/10 via-white/5 to-transparent
-        backdrop-blur-xl
-        border border-white/20
-        rounded-3xl
-        p-8 md:p-10
-        shadow-2xl
-        relative overflow-hidden
-      ">
-        <div className="absolute -top-24 -right-24 w-48 h-48 bg-secondary-bright/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-primary-cyan/10 rounded-full blur-3xl"></div>
+      <Card className="p-8 md:p-10 relative overflow-hidden bg-[#0F1A0F]/90">
+
+        {/* Glow Effects */}
+        <div className="absolute -top-24 -right-24 w-48 h-48 bg-green-primary/10 rounded-full blur-[80px]"></div>
+        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-green-primary/5 rounded-full blur-[80px]"></div>
 
         <div className="mb-8 relative z-10">
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent mb-2">
+          <h2 className="text-3xl font-bold text-white mb-2">
             Welcome Back
           </h2>
-          <p className="text-gray-400">Sign in to continue your trading journey</p>
+          <p className="text-text-secondary">Sign in to continue your trading journey</p>
         </div>
 
         <div className="space-y-5 relative z-10">
@@ -229,76 +222,45 @@ export default function LoginForm() {
           <label className="flex items-center cursor-pointer group">
             <input
               type="checkbox"
-              className="w-4 h-4 rounded border-2 border-white/20 bg-white/5 text-secondary-bright focus:ring-2 focus:ring-secondary-bright/50 transition-all"
+              className="w-4 h-4 rounded border-border-soft bg-background-secondary text-green-primary focus:ring-green-primary/50 transition-all"
             />
-            <span className="ml-2 text-sm text-gray-400 group-hover:text-gray-300 transition-colors">Remember me</span>
+            <span className="ml-2 text-sm text-text-secondary group-hover:text-white transition-colors">Remember me</span>
           </label>
-          <a href="/forgot-password" className="text-sm text-secondary-bright hover:text-secondary-light transition-colors">
+          <a href="/forgot-password" className="text-sm text-green-primary hover:text-green-soft transition-colors font-medium">
             Forgot password?
           </a>
         </div>
 
-        <motion.button
+        <Button
           type="submit"
           disabled={isSubmitting}
-          whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="
-            relative w-full px-6 py-4 
-            bg-gradient-to-r from-secondary-bright to-secondary-light
-            text-dark-black font-bold text-lg rounded-xl
-            overflow-hidden
-            disabled:opacity-50 disabled:cursor-not-allowed
-            shadow-lg shadow-secondary-bright/30
-            hover:shadow-xl hover:shadow-secondary-bright/40
-            transition-all duration-300
-            group
-            relative z-10
-          "
+          className="w-full text-lg py-4"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-
-          <span className="relative z-10 flex items-center justify-center gap-2">
-            {isSubmitting ? (
-              <>
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                  className="w-5 h-5 border-2 border-dark-black border-t-transparent rounded-full"
-                />
-                Signing in...
-              </>
-            ) : (
-              'Sign In'
-            )}
-          </span>
-        </motion.button>
+          {isSubmitting ? 'Signing in...' : 'Sign In'}
+        </Button>
 
         <div className="relative my-8 z-10">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-white/10"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-gradient-to-r from-transparent via-[#0B1120] to-transparent text-gray-400">
+            <span className="px-4 bg-[#0F1A0F] text-text-muted">
               Or continue with
             </span>
           </div>
         </div>
 
-        <motion.button
+        <button
           type="button"
           onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
           className="
             relative w-full px-6 py-4 
             bg-white/5 backdrop-blur-sm
-            border-2 border-white/10 hover:border-white/20
+            border border-white/10 hover:border-white/20
             rounded-xl font-medium text-white
             transition-all duration-300
             flex items-center justify-center gap-3
-            group
-            relative z-10
+            hover:bg-white/10
           "
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -308,20 +270,21 @@ export default function LoginForm() {
             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
           </svg>
           <span>Sign in with Google</span>
-        </motion.button>
+        </button>
 
-        <div className="mt-6 flex items-center justify-center gap-4 text-sm text-gray-400 relative z-10">
+        <div className="mt-6 flex items-center justify-center gap-4 text-sm text-text-muted relative z-10">
           <div className="flex items-center gap-1">
-            <Check className="w-4 h-4 text-secondary-bright" />
+            <Check className="w-4 h-4 text-green-primary" />
             <span>Secure Login</span>
           </div>
           <div className="w-1 h-1 rounded-full bg-gray-600"></div>
           <div className="flex items-center gap-1">
-            <Check className="w-4 h-4 text-secondary-bright" />
+            <Check className="w-4 h-4 text-green-primary" />
             <span>Protected</span>
           </div>
         </div>
-      </div>
+      </Card>
     </motion.form>
   )
 }
+

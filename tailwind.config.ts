@@ -9,74 +9,43 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Primary gradient colors (cyan to magenta)
-        // From Primary Color palette: Cyan #00F2FF, Magenta #FF00E5, White #FFFFFF
-        primary: {
-          cyan: '#00F2FF',      // RGB: R 0, G 242, B 255
-          magenta: '#FF00E5',   // RGB: R 229, G 0, B 255 (Note: description shows R 229, actual hex is R 255)
-          white: '#FFFFFF',     // RGB: R 255, G 255, B 255
-          DEFAULT: '#00F2FF',
+        background: {
+          primary: '#050705', // Near black
+          secondary: '#0A120A', // Slightly lighter
+          card: '#0F1A0F', // Card background
         },
-        // Secondary colors (mint to lime green gradient)
-        // From Secondary Color palette: Mint #87D593, Lime #C0F53D
-        secondary: {
-          light: '#87D593',     // RGB: R 135, G 213, B 147 (Mint Green - left end of gradient)
-          bright: '#C0F53D',    // RGB: R 192, G 245, B 61 (Lime Green - right end of gradient)
-          DEFAULT: '#C0F53D',
+        green: {
+          primary: '#3AFF3A', // Neon Green
+          soft: '#2EDB2E', // Soft Green
+          chart: '#22C522', // Darker Green for gradients
         },
-        // Neutral/Dark colors
-        // From Secondary Color palette: Dark Gray/Black #1D1D1B
-        dark: {
-          DEFAULT: '#1D1D1B',   // RGB: R 29, G 29, B 27 (Dark Gray/Black)
-          black: '#000000',
-          gray: '#1a1a1a',
+        text: {
+          primary: '#EDEDED',
+          secondary: '#A8B0A8',
+          muted: '#6B736B',
         },
-        // Accent colors - aliases for convenience
-        accent: {
-          DEFAULT: '#C0F53D',   // Same as secondary-bright
-          light: '#87D593',     // Same as secondary-light
-          dark: '#00F2FF',      // Same as primary-cyan
-        },
+        border: {
+          soft: 'rgba(58,255,58,0.15)',
+          strong: 'rgba(58,255,58,0.35)',
+        }
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
-        serif: ['var(--font-serif)', 'serif'],
       },
-      animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-up': 'slideUp 0.5s ease-out',
-        'slide-down': 'slideDown 0.5s ease-out',
-        'shimmer': 'shimmer 2.5s ease-in-out infinite',
-        'glow-pulse': 'glowPulse 2s ease-in-out infinite',
+      boxShadow: {
+        'primary-glow': '0 0 25px rgba(58,255,58,0.40)',
+        'hover-glow': '0 0 35px rgba(58,255,58,0.60)',
+        'card-glow': '0 0 30px rgba(58,255,58,0.10)',
+        'featured-glow': '0 0 40px rgba(58,255,58,0.40)',
       },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        slideDown: {
-          '0%': { transform: 'translateY(-20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        shimmer: {
-          '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(100%)' },
-        },
-        glowPulse: {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(192, 245, 61, 0.3)' },
-          '50%': { boxShadow: '0 0 40px rgba(192, 245, 61, 0.6)' },
-        },
+      backgroundImage: {
+        'gradient-button': 'linear-gradient(180deg, #3AFF3A 0%, #22C522 100%)',
+        'gradient-hero': 'radial-gradient(circle at top, rgba(58,255,58,0.12), transparent 60%)',
       },
-      maxWidth: {
-        // Reduce default max-widths by 25%
-        '7xl': '960px',  // Original: 1280px, Reduced: 960px (25% smaller)
-        '6xl': '864px',  // Original: 1152px, Reduced: 864px (25% smaller)
-        '5xl': '768px',  // Original: 1024px, Reduced: 768px (25% smaller)
-      },
+      borderRadius: {
+        'card': '16px',
+        'button': '12px',
+      }
     },
   },
   plugins: [],

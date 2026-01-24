@@ -4,29 +4,26 @@ import Link from 'next/link'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import LoginForm from '@/components/auth/LoginForm'
-import ParticleBackground from '@/components/animations/ParticleBackground'
-import GlowingOrb from '@/components/animations/GlowingOrb'
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen relative overflow-hidden flex flex-col">
+    <main className="min-h-screen relative overflow-hidden flex flex-col bg-background-primary">
       <Header />
 
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-[#0B1120]">
-        <ParticleBackground />
-        <GlowingOrb size={600} color="rgba(192, 245, 61, 0.1)" className="top-[-100px] left-[-100px]" />
-        <GlowingOrb size={500} color="rgba(0, 242, 255, 0.1)" className="bottom-[-100px] right-[-100px]" />
+      {/* Decorative Gradients */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-green-primary/5 rounded-full blur-[120px]" />
+        <div className="absolute top-[20%] right-[0%] w-[30%] h-[30%] bg-green-primary/5 rounded-full blur-[100px]" />
       </div>
 
-      <div className="flex-grow flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="flex-grow flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative z-10 pt-32">
         <div className="w-full max-w-md">
           <LoginForm />
 
-          <div className="mt-8 text-center bg-white/5 backdrop-blur-sm rounded-xl py-4 border border-white/5">
-            <p className="text-sm text-gray-400">
+          <div className="mt-8 text-center bg-background-secondary/50 backdrop-blur-sm rounded-xl py-4 border border-white/5">
+            <p className="text-sm text-text-muted">
               Don&apos;t have an account?{' '}
-              <Link href="/register" className="text-secondary-bright hover:text-white font-semibold transition-colors">
+              <Link href="/register" className="text-green-primary hover:text-white font-semibold transition-colors">
                 Sign up
               </Link>
             </p>

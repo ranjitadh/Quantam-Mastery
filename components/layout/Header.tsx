@@ -5,12 +5,13 @@ import { useState } from 'react'
 import { Menu, X, ChevronDown } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Logo from './Logo'
+import { Button } from '@/components/ui/Button'
 
 const navigation = [
-  { name: 'Features', href: '/#features', hasDropdown: true },
-  { name: 'Program', href: '/program', hasDropdown: true },
+  { name: 'Features', href: '/#features', hasDropdown: false },
+  { name: 'Program', href: '/program', hasDropdown: false },
   { name: 'Community', href: '/community', hasDropdown: false },
-  { name: 'Plans', href: '/plans', hasDropdown: false },
+  { name: 'Plans', href: '/#pricing', hasDropdown: false },
   { name: 'Affiliates', href: '/affiliates', hasDropdown: false },
 ]
 
@@ -19,9 +20,9 @@ export default function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0B1120]/80 backdrop-blur-xl border-b border-white/10">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background-primary/80 backdrop-blur-xl border-b border-white/5">
       {/* Premium Top Accent Line */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary-bright/50 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-primary/50 to-transparent" />
 
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
@@ -48,7 +49,7 @@ export default function Header() {
               >
                 <Link
                   href={item.href}
-                  className="text-sm font-medium text-gray-300 hover:text-white transition-colors flex items-center gap-1 py-2 relative"
+                  className="text-sm font-medium text-text-secondary hover:text-white transition-colors flex items-center gap-1 py-2 relative"
                 >
                   {item.name}
                   {item.hasDropdown && (
@@ -56,22 +57,8 @@ export default function Header() {
                   )}
 
                   {/* Gradient Underline on Hover */}
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-secondary-bright to-secondary-light transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full" />
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full" />
                 </Link>
-
-                {/* Dropdown Menu */}
-                {item.hasDropdown && activeDropdown === item.name && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-0 mt-2 w-56 bg-[#0B1120]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden"
-                  >
-                    <div className="px-4 py-3 text-sm text-gray-400 border-b border-white/5">
-                      Coming soon...
-                    </div>
-                  </motion.div>
-                )}
               </motion.div>
             ))}
 
@@ -81,21 +68,8 @@ export default function Header() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              <Link
-                href="/register"
-                className="
-                  relative overflow-hidden
-                  rounded-xl bg-gradient-to-r from-secondary-bright to-secondary-light 
-                  px-6 py-2.5 text-sm font-semibold text-dark-black 
-                  shadow-lg shadow-secondary-bright/30
-                  hover:shadow-xl hover:shadow-secondary-bright/40
-                  transition-all duration-300
-                  group
-                "
-              >
-                <span className="relative z-10">Register</span>
-                {/* Shimmer Effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+              <Link href="/register">
+                <Button size="sm">Register</Button>
               </Link>
             </motion.div>
           </div>
@@ -141,7 +115,7 @@ export default function Header() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="md:hidden py-4 space-y-2 border-t border-white/10 overflow-hidden"
+              className="md:hidden py-4 space-y-2 border-t border-white/10 overflow-hidden bg-background-primary"
             >
               {navigation.map((item, index) => (
                 <motion.div
@@ -170,20 +144,10 @@ export default function Header() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: navigation.length * 0.05 }}
-                className="pt-2"
+                className="pt-2 px-4"
               >
-                <Link
-                  href="/register"
-                  className="
-                    block px-4 py-3 text-base font-semibold text-center
-                    text-dark-black bg-gradient-to-r from-secondary-bright to-secondary-light 
-                    rounded-lg shadow-lg shadow-secondary-bright/30
-                    hover:shadow-xl hover:shadow-secondary-bright/40
-                    transition-all duration-300
-                  "
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Register
+                <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
+                  <Button className="w-full">Register</Button>
                 </Link>
               </motion.div>
             </motion.div>
@@ -193,3 +157,4 @@ export default function Header() {
     </header>
   )
 }
+

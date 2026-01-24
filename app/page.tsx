@@ -1,37 +1,42 @@
-import Link from 'next/link'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import Hero from '@/components/sections/Hero'
-import BrandEssence from '@/components/sections/BrandEssence'
-import BrandStory from '@/components/sections/BrandStory'
-import MissionStatement from '@/components/sections/MissionStatement'
-import VisionStatement from '@/components/sections/VisionStatement'
-import ExpertsSection from '@/components/sections/ExpertsSection'
-import DashboardFeatures from '@/components/sections/DashboardFeatures'
-import BrandShowcase from '@/components/sections/BrandShowcase'
 import CalendarJournaling from '@/components/sections/CalendarJournaling'
-import BenefitsSection from '@/components/sections/BenefitsSection'
+import DashboardFeatures from '@/components/sections/DashboardFeatures'
+import TimelineSection from '@/components/sections/TimelineSection'
+import ExpertsSection from '@/components/sections/ExpertsSection'
+import PricingSection from '@/components/sections/PricingSection'
 import Testimonials from '@/components/sections/Testimonials'
-import StrategyCall from '@/components/sections/StrategyCall'
 import FAQs from '@/components/sections/FAQs'
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-background-primary text-text-primary selection:bg-green-primary/30">
       <Header />
+
       <Hero />
-      <BrandEssence />
-      <BrandStory />
-      <MissionStatement />
-      <VisionStatement />
-      <ExpertsSection />
-      <DashboardFeatures />
-      <BrandShowcase />
+
+      {/* Visual Journaling Preview */}
       <CalendarJournaling />
-      <BenefitsSection />
+
+      {/* 6 Grid Features */}
+      <DashboardFeatures />
+
+      {/* 7 Days Timeline */}
+      <TimelineSection />
+
+      {/* Mentor/Founder */}
+      <ExpertsSection />
+
+      {/* Pricing Plans */}
+      <PricingSection />
+
+      {/* Testimonials */}
       <Testimonials />
-      <StrategyCall />
+
+      {/* FAQ */}
       <FAQs />
+
       <Footer />
     </main>
   )

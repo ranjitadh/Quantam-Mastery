@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { CheckCircle, Lock, ArrowRight, BookOpen } from 'lucide-react'
+import { CheckCircle, ArrowRight } from 'lucide-react'
 import { toast } from 'react-hot-toast'
+import { Button } from '@/components/ui/Button'
+import { Card } from '@/components/ui/Card'
 
 interface QuantumCompletionFormProps {
     quantumId: string
@@ -69,82 +71,92 @@ export default function QuantumCompletionForm({
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-green-500/10 border border-green-500/30 rounded-lg p-6 mt-8"
+                className="mt-8"
             >
-                <div className="flex items-center gap-3 mb-4">
-                    <CheckCircle className="h-8 w-8 text-green-500" />
-                    <h3 className="text-xl font-bold text-green-400">Quantum Mastery Verified</h3>
-                </div>
-
-                {previousCompletion?.reflection && (
-                    <div className="bg-dark/50 p-4 rounded border border-white/5 mb-6">
-                        <p className="text-xs text-gray-500 uppercase tracking-widest mb-2">Your Reflection</p>
-                        <p className="text-gray-300 italic">&quot;{previousCompletion.reflection}&quot;</p>
+                <Card className="p-8 border-green-primary/30 bg-green-primary/5">
+                    <div className="flex items-center gap-3 mb-6">
+                        <CheckCircle className="h-8 w-8 text-green-primary" />
+                        <h3 className="text-xl font-bold text-white">Quantum Mastery Verified</h3>
                     </div>
-                )}
 
-                <div className="flex gap-4">
-                    {nextQuantumId ? (
-                        <button
-                            onClick={() => router.push(`/dashboard/program/quantum/${nextQuantumId}`)}
-                            className="flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-md font-bold transition-all"
-                        >
-                            Proceed to Next Quantum <ArrowRight className="h-5 w-5" />
-                        </button>
-                    ) : (
-                        <div className="text-secondary-bright font-bold">
-                            Program Complete! You have mastered this path.
+                    {previousCompletion?.reflection && (
+                        <div className="bg-background-secondary p-6 rounded-xl border border-white/5 mb-8">
+                            <p className="text-xs text-text-muted uppercase tracking-widest mb-3 font-bold">Your Reflection</p>
+                            <p className="text-text-secondary italic leading-relaxed">&quot;{previousCompletion.reflection}&quot;</p>
                         </div>
                     )}
-                </div>
+
+                    <div className="flex gap-4">
+                        {nextQuantumId ? (
+                            <Button
+                                onClick={() => router.push(`/dashboard/program/quantum/${nextQuantumId}`)}
+                                className="gap-2"
+                            >
+                                Proceed to Next Quantum <ArrowRight className="h-5 w-5" />
+                            </Button>
+                        ) : (
+                            <div className="text-green-primary font-bold text-lg">
+                                Program Complete! You have mastered this path.
+                            </div>
+                        )}
+                    </div>
+                </Card>
             </motion.div>
         )
     }
 
     return (
-        <div className="mt-8 border-t-2 border-dashed border-secondary-bright/20 pt-8">
-            <h3 className="text-xl font-bold text-white mb-4">Mastery Validation</h3>
+        <div className="mt-8 pt-8 border-t border-white/5">
+            <h3 className="text-2xl font-bold text-white mb-6">Mastery Validation</h3>
 
             {type === 'TRADE_EXEC' && (
-                <div className="bg-blue-500/10 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
-                    <p className="text-blue-200 font-medium">ACTION REQUIRED:</p>
+                <div className="bg-blue-500/10 border-l-4 border-blue-500 p-4 mb-8 rounded-r">
+                    <p className="text-blue-400 font-bold text-sm mb-1 uppercase">Action Required:</p>
                     <p className="text-white mt-1">{actionRequired}</p>
                 </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 {prompt && (
-                    <div>
-                        <label className="block text-secondary-bright text-sm font-semibold mb-2">
-                            REFLECTION CHECKPOINT
+                    <Card className="p-6">
+                        <label className="block text-green-primary text-sm font-bold mb-3 uppercase tracking-wider">
+                            Reflection Checkpoint
                         </label>
-                        <p className="text-gray-400 text-sm mb-3">{prompt}</p>
+                        <p className="text-text-secondary text-sm mb-4 leading-relaxed">{prompt}</p>
                         <textarea
                             value={reflection}
                             onChange={(e) => setReflection(e.target.value)}
-                            className="w-full h-32 bg-dark border border-secondary-bright/20 rounded-md p-4 text-white focus:border-secondary-bright focus:ring-1 focus:ring-secondary-bright transition-all"
+                            className="w-full h-40 bg-background-secondary border border-white/10 rounded-xl p-4 text-white focus:border-green-primary focus:ring-1 focus:ring-green-primary transition-all placeholder:text-text-muted resize-none"
                             placeholder="Enter your reflection here to prove understanding..."
                             required
                         />
-                    </div>
+                    </Card>
                 )}
 
-                {/* For task types that don't need reflection text, we might just show a "Mark Complete" button */}
+                {/* For task types that don't need reflection text */}
                 {type === 'TASK' && !prompt && (
-                    <div className="flex items-center gap-3">
-                        <input type="checkbox" required className="w-5 h-5 rounded border-secondary-bright text-secondary-bright focus:ring-secondary-bright" />
-                        <span className="text-white">I confirm I have completed the required action above.</span>
+                    <div className="flex items-center gap-3 py-4">
+                        <div className="relative flex items-center">
+                            <input
+                                type="checkbox"
+                                required
+                                className="peer h-6 w-6 cursor-pointer appearance-none rounded border border-white/20 bg-background-secondary checked:border-green-primary checked:bg-green-primary transition-all"
+                            />
+                            <CheckCircle className="pointer-events-none absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 text-black opacity-0 peer-checked:opacity-100" />
+                        </div>
+                        <span className="text-white font-medium">I confirm I have completed the required action above.</span>
                     </div>
                 )}
 
-                <button
+                <Button
                     type="submit"
                     disabled={submitting}
-                    className="w-full md:w-auto bg-secondary-bright text-dark font-bold px-8 py-4 rounded-md hover:bg-white transition-all shadow-[0_0_20px_rgba(192,245,61,0.2)] hover:shadow-[0_0_30px_rgba(192,245,61,0.4)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    size="lg"
+                    className="w-full md:w-auto gap-2"
                 >
                     {submitting ? 'Verifying...' : 'Complete Quantum'}
                     {!submitting && <CheckCircle className="h-5 w-5" />}
-                </button>
+                </Button>
             </form>
         </div>
     )

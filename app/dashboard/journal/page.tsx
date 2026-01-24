@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calendar as CalendarIcon, Plus, BookOpen, TrendingUp, TrendingDown, Search, Filter, X, Tag, Trash2 } from 'lucide-react'
-import PremiumCard from '@/components/ui/PremiumCard'
+import { Card } from '@/components/ui/Card'
+import { Button } from '@/components/ui/Button'
 import StatsCard from '@/components/dashboard/StatsCard'
 import TradeEntryForm from '@/components/dashboard/TradeEntryForm'
 import { createTrade, getTrades, deleteTrade, getQuantumsSimple, CreateTradeData } from '@/app/actions/journal'
@@ -55,8 +56,7 @@ export default function JournalPage() {
       ])
 
       if (tradeRes.success && tradeRes.trades) {
-        // Transform date strings back to Date objects if needed, 
-        // though server actions usually serialize Date, we might need new Date() wrapper
+        // Transform date strings back to Date objects
         const parsedTrades = tradeRes.trades.map((t: any) => ({
           ...t,
           entryDate: new Date(t.entryDate)
@@ -167,7 +167,7 @@ export default function JournalPage() {
   ]
 
   return (
-    <div className="space-y-8 max-w-7xl pb-20">
+    <div className="space-y-8 max-w-7xl mx-auto pb-20">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -175,20 +175,18 @@ export default function JournalPage() {
         className="flex items-center justify-between"
       >
         <div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent mb-2">
-            Trade Journal
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+            Trade <span className="text-green-primary">Journal</span>
           </h1>
-          <p className="text-gray-400">Document your trading journey and improve your edge</p>
+          <p className="text-text-secondary">Document your trading journey and improve your edge</p>
         </div>
-        <motion.button
+        <Button
           onClick={() => setShowNewEntryModal(true)}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="px-6 py-3 bg-gradient-to-r from-secondary-bright to-secondary-light text-dark-black font-semibold rounded-xl shadow-lg shadow-secondary-bright/30 flex items-center gap-2"
+          className="flex items-center gap-2"
         >
           <Plus className="w-5 h-5" />
           New Entry
-        </motion.button>
+        </Button>
       </motion.div>
 
       {/* Stats */}
@@ -198,19 +196,19 @@ export default function JournalPage() {
         ))}
       </div>
 
-      {/* Filters and Search are same as before... */}
+      {/* Filters and Search */}
       <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
         {/* View Toggle */}
-        <div className="flex gap-2 bg-white/5 p-1 rounded-xl border border-white/10">
+        <div className="flex gap-2 bg-background-secondary p-1 rounded-xl border border-white/5">
           <button
             onClick={() => setView('list')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${view === 'list' ? 'bg-secondary-bright text-dark-black shadow-lg font-semibold' : 'text-gray-300 hover:text-white'}`}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${view === 'list' ? 'bg-green-primary text-background-primary shadow-lg font-bold' : 'text-text-secondary hover:text-white'}`}
           >
             <BookOpen className="h-4 w-4" /> List
           </button>
-          {/* Calendar Button (placeholder link logic if we separate pages, or switch view) */}
+
           <button
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-400 cursor-not-allowed opacity-50"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-text-muted cursor-not-allowed opacity-50"
             title="Coming in Phase 2"
           >
             <CalendarIcon className="h-4 w-4" /> Calendar
@@ -220,13 +218,13 @@ export default function JournalPage() {
         {/* Search */}
         <div className="flex gap-3 flex-1 md:flex-initial">
           <div className="relative flex-1 md:w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary" />
             <input
               type="text"
               placeholder="Search trades..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-gray-500 focus:border-secondary-bright focus:outline-none transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-background-secondary border border-white/5 rounded-lg text-white placeholder:text-text-muted focus:border-green-primary/50 focus:outline-none transition-all"
             />
           </div>
         </div>
@@ -236,15 +234,15 @@ export default function JournalPage() {
       {view === 'list' && (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
           {loading ? (
-            <p className="text-center text-gray-500 py-10">Loading journal...</p>
+            <p className="text-center text-text-secondary py-10">Loading journal...</p>
           ) : filteredEntries.length === 0 ? (
-            <PremiumCard variant="luxury" className="p-12">
+            <Card className="p-12">
               <div className="text-center py-8">
-                <BookOpen className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-                <p className="text-gray-400 text-lg">No journal entries found</p>
-                <p className="text-gray-500 text-sm mt-2">Start documenting your trades to build your edge</p>
+                <BookOpen className="w-16 h-16 text-text-muted mx-auto mb-4" />
+                <p className="text-text-secondary text-lg">No journal entries found</p>
+                <p className="text-text-muted text-sm mt-2">Start documenting your trades to build your edge</p>
               </div>
-            </PremiumCard>
+            </Card>
           ) : (
             filteredEntries.map((entry, index) => (
               <motion.div
@@ -253,54 +251,54 @@ export default function JournalPage() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.05 }}
               >
-                <PremiumCard variant="luxury" className="p-6 hover:scale-[1.01] transition-transform cursor-pointer relative group">
+                <Card className="p-6 hover:border-green-primary/30 transition-all cursor-pointer relative group bg-background-secondary">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       {/* Header */}
                       <div className="flex items-center gap-3 mb-4">
-                        <div className={`p-2 rounded-lg ${(entry.profitLoss || 0) > 0 ? 'bg-green-500/20' : 'bg-red-500/20'}`}>
-                          {(entry.profitLoss || 0) > 0 ? (<TrendingUp className="w-5 h-5 text-green-400" />) : (<TrendingDown className="w-5 h-5 text-red-400" />)}
+                        <div className={`p-2 rounded-lg ${(entry.profitLoss || 0) > 0 ? 'bg-green-primary/10' : 'bg-red-500/10'}`}>
+                          {(entry.profitLoss || 0) > 0 ? (<TrendingUp className="w-5 h-5 text-green-primary" />) : (<TrendingDown className="w-5 h-5 text-red-500" />)}
                         </div>
                         <div>
                           <h3 className="text-xl font-bold text-white">{entry.symbol}</h3>
-                          <p className="text-sm text-gray-400">
+                          <p className="text-sm text-text-secondary">
                             {entry.entryDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                           </p>
                         </div>
-                        <span className={`ml-auto px-3 py-1 rounded-full text-sm font-semibold ${entry.type === 'BUY' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                        <span className={`ml-auto px-3 py-1 rounded-full text-sm font-bold ${entry.type === 'BUY' ? 'bg-green-primary/10 text-green-primary' : 'bg-red-500/10 text-red-500'}`}>
                           {entry.type}
                         </span>
                         <button onClick={() => handleDelete(entry.id)} className="p-2 hover:bg-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Trash2 className="w-4 h-4 text-red-400" />
+                          <Trash2 className="w-4 h-4 text-red-500" />
                         </button>
                       </div>
 
                       {/* Trade Details */}
                       <div className="grid grid-cols-3 gap-4 mb-4">
                         <div>
-                          <p className="text-xs text-gray-400">Entry</p>
+                          <p className="text-xs text-text-muted">Entry</p>
                           <p className="text-white font-semibold">{entry.entryPrice}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-400">Exit</p>
+                          <p className="text-xs text-text-muted">Exit</p>
                           <p className="text-white font-semibold">{entry.exitPrice || '-'}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-400">P/L</p>
-                          <p className={`font-bold ${(entry.profitLoss || 0) > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                          <p className="text-xs text-text-muted">P/L</p>
+                          <p className={`font-bold ${(entry.profitLoss || 0) > 0 ? 'text-green-primary' : 'text-red-500'}`}>
                             {entry.profitLoss ? `$${entry.profitLoss.toFixed(2)}` : '-'}
                           </p>
                         </div>
                       </div>
 
                       {/* Notes & Setup */}
-                      {entry.setup && <p className="text-sm text-secondary-bright mb-1 font-mono">Setup: {entry.setup}</p>}
-                      <p className="text-gray-300 mb-4">{entry.notes}</p>
+                      {entry.setup && <p className="text-sm text-green-primary mb-1 font-mono">Setup: {entry.setup}</p>}
+                      <p className="text-text-secondary mb-4">{entry.notes}</p>
 
                       {/* Tags & Emotions */}
                       <div className="flex flex-wrap gap-2">
                         {entry.tags.map((tag, i) => (
-                          <span key={i} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-400 flex items-center gap-1">
+                          <span key={i} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-text-muted flex items-center gap-1">
                             <Tag className="w-3 h-3" /> {tag}
                           </span>
                         ))}
@@ -317,7 +315,7 @@ export default function JournalPage() {
                       </div>
                     </div>
                   </div>
-                </PremiumCard>
+                </Card>
               </motion.div>
             ))
           )}
@@ -335,12 +333,12 @@ export default function JournalPage() {
             <motion.div
               initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-[#0A0A0A] border-2 border-white/10 rounded-3xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+              className="bg-[#0A0A0A] border border-white/10 rounded-3xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
             >
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-white">Log Trade Execution</h2>
                 <button onClick={() => setShowNewEntryModal(false)} className="p-2 rounded-lg hover:bg-white/10 transition-all">
-                  <X className="w-6 h-6 text-gray-400" />
+                  <X className="w-6 h-6 text-text-muted" />
                 </button>
               </div>
 

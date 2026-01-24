@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { BookOpen, CheckCircle, Lock, ArrowRight, BrainCircuit } from 'lucide-react'
+import { ArrowRight, BrainCircuit } from 'lucide-react'
 import Link from 'next/link'
+import { Card } from '@/components/ui/Card'
+import { Button } from '@/components/ui/Button'
 
 interface Quantum {
     id: string
@@ -26,12 +28,12 @@ export default function CurrentQuantumWidget() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        fetch('/api/learning/state')
+        // Fetch specific learning state
+        fetch('/api/learning/state?slug=foundation')
             .then((res) => res.json())
             .then((data) => {
-                // Map new API response to component state
                 setData({
-                    program: { title: 'Foundational Path' }, // TODO: Get title from API if activeQuantum exists
+                    program: { title: 'Foundational Path' }, // Should ideally come from API
                     currentQuantum: data.activeQuantum,
                     isProgramComplete: data.isComplete,
                     completedIds: data.history
@@ -46,70 +48,68 @@ export default function CurrentQuantumWidget() {
 
     if (loading) {
         return (
-            <div className="bg-secondary-bright/5 rounded-lg p-6 border-2 border-secondary-bright/20 h-48 animate-pulse">
-                <div className="h-6 bg-secondary-bright/20 rounded w-1/3 mb-4"></div>
-                <div className="h-4 bg-secondary-bright/10 rounded w-full mb-2"></div>
-            </div>
+            <Card className="h-48 animate-pulse flex flex-col justify-center p-6">
+                <div className="h-6 bg-white/10 rounded w-1/3 mb-4"></div>
+                <div className="h-4 bg-white/5 rounded w-full mb-2"></div>
+            </Card>
         )
     }
 
     if (!data) return null
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-gradient-to-br from-secondary-bright/10 to-transparent rounded-lg p-6 border-2 border-secondary-bright/30 relative overflow-hidden"
-        >
-            <div className="flex items-start justify-between relative z-10">
-                <div>
-                    <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                        <BrainCircuit className="h-6 w-6 text-secondary-bright" />
-                        Current Quantum
-                    </h2>
+        <Card className="p-0 overflow-hidden border-green-primary/30 relative">
+            {/* Background Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-green-primary/5 via-transparent to-transparent pointer-events-none" />
 
-                    {data.isProgramComplete ? (
-                        <div className="mt-4">
-                            <p className="text-secondary-bright font-medium text-lg">Program Complete!</p>
-                            <p className="text-gray-400 text-sm mt-1">You have mastered this level.</p>
-                        </div>
-                    ) : data.currentQuantum ? (
-                        <div className="mt-4">
-                            <p className="text-sm text-gray-400 uppercase tracking-widest text-xs font-semibold mb-1">
-                                {data.program.title} • Unit {data.currentQuantum.order}
-                            </p>
-                            <h3 className="text-2xl font-bold text-white mb-2">{data.currentQuantum.title}</h3>
-                            <div className="flex items-center gap-2 text-sm text-secondary-bright/80">
-                                <span className="bg-secondary-bright/20 px-2 py-0.5 rounded text-xs border border-secondary-bright/30">
-                                    {data.currentQuantum.type}
-                                </span>
-                                <span>In Progress</span>
+            <div className="p-6 relative z-10">
+                <div className="flex items-start justify-between">
+                    <div>
+                        <h2 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+                            <BrainCircuit className="h-6 w-6 text-green-primary" />
+                            Current Quantum
+                        </h2>
+
+                        {data.isProgramComplete ? (
+                            <div className="mt-2">
+                                <p className="text-green-primary font-bold text-lg">Program Complete!</p>
+                                <p className="text-text-secondary text-sm mt-1">You have mastered this level.</p>
                             </div>
-                        </div>
-                    ) : (
-                        <p className="mt-4 text-gray-400">No active program found.</p>
-                    )}
-                </div>
+                        ) : data.currentQuantum ? (
+                            <div className="mt-2">
+                                <p className="text-xs font-bold text-text-muted uppercase tracking-widest mb-1">
+                                    {data.program.title} • Unit {data.currentQuantum.order}
+                                </p>
+                                <h3 className="text-2xl font-bold text-white mb-3">{data.currentQuantum.title}</h3>
+                                <div className="flex items-center gap-2">
+                                    <span className="bg-green-primary/10 text-green-primary border border-green-primary/20 px-2 py-0.5 rounded text-xs font-bold uppercase">
+                                        {data.currentQuantum.type}
+                                    </span>
+                                    <span className="text-sm text-text-secondary">In Progress</span>
+                                </div>
+                            </div>
+                        ) : (
+                            <p className="mt-4 text-text-muted">No active program found.</p>
+                        )}
+                    </div>
 
-                <div className="hidden md:block">
-                    {/* Visual progress indicator could go here */}
-                    <div className="h-16 w-16 rounded-full border-4 border-secondary-bright/30 flex items-center justify-center">
-                        <span className="text-secondary-bright font-bold">{data.completedIds.length}</span>
+                    <div className="hidden md:flex flex-col items-center justify-center p-4 bg-background-secondary rounded-full border border-white/5 h-20 w-20">
+                        <span className="text-2xl font-bold text-white">{data.completedIds.length}</span>
+                        <span className="text-[10px] text-text-muted uppercase">Done</span>
                     </div>
                 </div>
-            </div>
 
-            {!data.isProgramComplete && data.currentQuantum && (
-                <div className="mt-6 flex justify-end">
-                    <Link
-                        href={`/dashboard/program/quantum/${data.currentQuantum.id}`}
-                        className="group flex items-center gap-2 bg-secondary-bright text-dark font-bold px-6 py-3 rounded-md hover:bg-white transition-all shadow-[0_0_20px_rgba(192,245,61,0.3)] hover:shadow-[0_0_30px_rgba(192,245,61,0.5)]"
-                    >
-                        Enter Quantum
-                        <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                    </Link>
-                </div>
-            )}
-        </motion.div>
+                {!data.isProgramComplete && data.currentQuantum && (
+                    <div className="mt-6 flex justify-end">
+                        <Link href={`/dashboard/program/quantum/${data.currentQuantum.id}`}>
+                            <Button className="group">
+                                Enter Quantum
+                                <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" />
+                            </Button>
+                        </Link>
+                    </div>
+                )}
+            </div>
+        </Card>
     )
 }

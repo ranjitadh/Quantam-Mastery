@@ -1,65 +1,71 @@
 'use client'
 
 import { motion } from 'framer-motion'
-
-const stats = [
-  { label: 'Years of Experience', value: '5+' },
-  { label: 'Traders Trained', value: '200+' },
-  { label: 'Trading Portfolio', value: '$2M+' },
-  { label: 'Winning Rate', value: '80%+' },
-]
+import Image from 'next/image'
+import { Section } from '@/components/ui/Section'
+import { Button } from '@/components/ui/Button'
 
 export default function ExpertsSection() {
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-dark text-white border-t border-secondary-bright/10">
-      <div className="mx-auto max-w-7xl">
+    <Section className="bg-background-secondary border-t border-border-soft">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        {/* Left: Image */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="relative max-w-sm mx-auto md:max-w-none md:mx-0 order-2 md:order-1"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">LEARN FROM THE EXPERTS</h2>
-        </motion.div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-secondary-bright/10 backdrop-blur-sm rounded-lg p-6 text-center border border-secondary-bright/20"
-            >
-              <div className="text-3xl md:text-4xl font-bold text-secondary-bright mb-2">{stat.value}</div>
-              <div className="text-sm md:text-base text-gray-300">{stat.label}</div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Featured In */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="pt-8 border-t border-white/20"
-        >
-          <p className="text-center text-gray-300 mb-6">Featured In</p>
-          <div className="flex flex-wrap justify-center gap-8 items-center">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="h-16 w-32 bg-white/10 rounded-lg flex items-center justify-center"
-              >
-                <span className="text-xs text-gray-400">Logo {i}</span>
-              </div>
-            ))}
+          <div className="absolute inset-0 bg-green-primary/20 blur-[60px] rounded-full" />
+          <div className="relative rounded-2xl overflow-hidden border border-green-primary/30 shadow-2xl">
+            <Image
+              src="/images/founder.jpg" // Assuming this exists or using placeholder
+              alt="Founder"
+              width={500}
+              height={600}
+              className="w-full h-auto object-cover grayscale hover:grayscale-0 transition-all duration-700"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6">
+              <h3 className="text-2xl font-bold text-white">Ranjit Adhikari</h3>
+              <p className="text-green-primary font-medium">Head Mentor & Founder</p>
+            </div>
           </div>
         </motion.div>
+
+        {/* Right: Content */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="order-1 md:order-2"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Learn from Real <br />
+            <span className="text-green-primary">Market Experience</span>
+          </h2>
+
+          <div className="space-y-6 text-text-secondary text-lg leading-relaxed">
+            <p>
+              "I didn't start with a silver spoon. I built my edge through thousands of hours of chart time, analyzing failures, and refining a system that actually works in live conditions."
+            </p>
+            <p>
+              Quantum Mastery isn't just a course—it's the mentorship I wish I had when I started. We focus on the two things that matter most: <strong className="text-white">Capital Protection</strong> and <strong className="text-white">Asymmetric Upside</strong>.
+            </p>
+          </div>
+
+          <div className="mt-8 flex gap-4">
+            <div className="bg-background-primary p-4 rounded-xl border border-border-soft text-center min-w-[120px]">
+              <div className="text-2xl font-bold text-white">7+</div>
+              <div className="text-xs text-text-muted">Years Exp.</div>
+            </div>
+            <div className="bg-background-primary p-4 rounded-xl border border-border-soft text-center min-w-[120px]">
+              <div className="text-2xl font-bold text-white">$10M+</div>
+              <div className="text-xs text-text-muted">Managed</div>
+            </div>
+          </div>
+        </motion.div>
+
       </div>
-    </section>
+    </Section>
   )
 }

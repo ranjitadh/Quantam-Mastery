@@ -73,6 +73,5 @@ server {
 
 Check and restart Nginx:
 ```bash
-sudo nginx -t
-sudo systemctl restart nginx
+v
 ```

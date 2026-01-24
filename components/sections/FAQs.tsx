@@ -1,82 +1,74 @@
 'use client'
 
+import { motion } from 'framer-motion'
+import { Section } from '@/components/ui/Section'
+import { Card } from '@/components/ui/Card'
+import { Plus, Minus } from 'lucide-react'
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown } from 'lucide-react'
 
 const faqs = [
   {
-    question: 'What is Quantum Mastery?',
-    answer: 'Quantum Mastery is a comprehensive trading education and community platform designed for serious traders who value clarity, structure, and disciplined thinking.',
+    q: "Is this suitable for beginners?",
+    a: "Absolutely. The course is structured to take you from zero knowledge to advanced execution. Module 1 starts with the absolute basics."
   },
   {
-    question: 'How do I get started?',
-    answer: 'You can start with our free plan that includes unlimited journaling, performance stats, and core analytics. Simply register and begin tracking your trades immediately.',
+    q: "Do you provide signals?",
+    a: "We provide 'Trade Ideas' and live analysis. We teach you how to fish, but we also show you where the fish are."
   },
   {
-    question: 'What makes Quantum Mastery different?',
-    answer: 'We focus on process, psychology, and structure - not signals. Our platform provides tools for serious traders including advanced analytics, calendar journaling, trade copying, and competitions.',
+    q: "Is the community active?",
+    a: "Yes, our Discord is active 24/7 with traders from all timezones. We have dedicated moderators and mentors online."
   },
   {
-    question: 'Can I upgrade my plan later?',
-    answer: 'Yes, you can upgrade to Pro Trader, Elite Trader, or Mastery Circle plans at any time. All plans are designed to grow with you as you progress in your trading journey.',
-  },
-  {
-    question: 'Is my data secure?',
-    answer: 'Absolutely. We use industry-standard security practices including encrypted data transmission, secure authentication, and regular security audits to protect your information.',
-  },
+    q: "What if I'm not satisfied?",
+    a: "We offer a 14-day action-based refund guarantee. If you do the work and don't see value, we'll refund you."
+  }
 ]
 
 export default function FAQs() {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-dark border-t border-secondary-bright/10">
-      <div className="mx-auto max-w-4xl">
-        <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">
-          FAQs
-        </h2>
+    <Section className="bg-background-secondary">
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">Common <span className="text-green-primary">Questions</span></h2>
+        </div>
 
         <div className="space-y-4">
-          {faqs.map((faq, index) => (
+          {faqs.map((faq, i) => (
             <motion.div
-              key={index}
+              key={i}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="border-2 border-secondary-bright/20 rounded-lg overflow-hidden bg-secondary-bright/5"
+              transition={{ delay: i * 0.1 }}
             >
-              <button
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-secondary-bright/10 transition-colors"
+              <Card
+                className={`overflow-hidden transition-all duration-300 ${openIndex === i ? 'border-green-primary/50' : 'border-border-soft'}`}
               >
-                <span className="font-semibold text-white pr-4">{faq.question}</span>
-                <ChevronDown
-                  className={`h-5 w-5 text-secondary-bright flex-shrink-0 transition-transform ${
-                    openIndex === index ? 'transform rotate-180' : ''
-                  }`}
-                />
-              </button>
-              <AnimatePresence>
-                {openIndex === index && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="px-6 py-4 bg-secondary-bright/5 text-gray-300">
-                      {faq.answer}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                <button
+                  onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                  className="w-full text-left p-6 flex justify-between items-center"
+                >
+                  <span className={`font-bold text-lg ${openIndex === i ? 'text-green-primary' : 'text-white'}`}>{faq.q}</span>
+                  {openIndex === i ? <Minus className="w-5 h-5 text-green-primary" /> : <Plus className="w-5 h-5 text-text-muted" />}
+                </button>
+
+                <motion.div
+                  initial={false}
+                  animate={{ height: openIndex === i ? 'auto' : 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-6 pb-6 text-text-secondary leading-relaxed border-t border-border-soft/50 pt-4">
+                    {faq.a}
+                  </div>
+                </motion.div>
+              </Card>
             </motion.div>
           ))}
         </div>
       </div>
-    </section>
+    </Section>
   )
 }
