@@ -11,6 +11,7 @@ import { motion } from 'framer-motion'
 import { Mail, Lock, Check } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -22,6 +23,7 @@ type LoginFormData = z.infer<typeof loginSchema>
 export default function LoginForm() {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [loginToken, setLoginToken] = useState<string | null>(null)
   const [focusedField, setFocusedField] = useState<string | null>(null)
 
   const {
@@ -34,11 +36,17 @@ export default function LoginForm() {
   })
 
   const onSubmit = async (data: LoginFormData) => {
+    if (!loginToken) {
+      toast.error('Please complete the captcha')
+      return
+    }
+
     setIsSubmitting(true)
     try {
       const result = await signIn('credentials', {
         email: data.email,
         password: data.password,
+        recaptchaToken: loginToken,
         redirect: false,
       })
 
@@ -229,6 +237,14 @@ export default function LoginForm() {
           <a href="/forgot-password" className="text-sm text-green-primary hover:text-green-soft transition-colors font-medium">
             Forgot password?
           </a>
+        </div>
+
+        <div className="flex justify-center mb-6">
+          <ReCAPTCHA
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+            onChange={(token) => setLoginToken(token)}
+            theme="dark"
+          />
         </div>
 
         <Button

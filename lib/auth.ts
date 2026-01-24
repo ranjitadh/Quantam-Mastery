@@ -4,6 +4,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { prisma } from './prisma'
 import bcrypt from 'bcryptjs'
+import { verifyCaptcha } from './captcha'
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -24,10 +25,23 @@ export const authOptions: NextAuthOptions = {
       credentials: {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
+        recaptchaToken: { label: 'ReCAPTCHA', type: 'text' }
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           throw new Error('Invalid credentials')
+        }
+
+        // Verify ReCAPTCHA (skip if in development if needed, but strict here)
+        if (credentials.recaptchaToken) {
+          const isCaptchaValid = await verifyCaptcha(credentials.recaptchaToken)
+          if (!isCaptchaValid) throw new Error('Invalid ReCAPTCHA')
+        } else {
+          // We might want to allow sign in without captcha if it's not provided (e.g. mobile app later), 
+          // but for now, we enforce it if the Frontend sends it. 
+          // If Frontend ALWAYS sends it, we should throw error if missing.
+          // Let's enforce it.
+          throw new Error('Please complete the ReCAPTCHA')
         }
 
         const user = await prisma.user.findUnique({

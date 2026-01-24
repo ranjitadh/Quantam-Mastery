@@ -10,6 +10,7 @@ import { motion } from 'framer-motion'
 import { User, Mail, Lock, Check } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -143,6 +144,7 @@ const FormField = ({
 export default function RegisterForm({ plan, type }: RegisterFormProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [registerToken, setRegisterToken] = useState<string | null>(null)
   const [focusedField, setFocusedField] = useState<string | null>(null)
 
   const {
@@ -157,6 +159,11 @@ export default function RegisterForm({ plan, type }: RegisterFormProps) {
   const watchedValues = watch()
 
   const onSubmit = async (data: RegisterFormData) => {
+    if (!registerToken) {
+      toast.error('Please complete the captcha')
+      return
+    }
+
     setIsSubmitting(true)
     try {
       const response = await fetch('/api/auth/register', {
@@ -166,6 +173,7 @@ export default function RegisterForm({ plan, type }: RegisterFormProps) {
           ...data,
           plan,
           type,
+          recaptchaToken: registerToken,
         }),
       })
 
@@ -254,6 +262,14 @@ export default function RegisterForm({ plan, type }: RegisterFormProps) {
             hasValue={!!watchedValues.confirmPassword}
             isFocused={focusedField === 'confirmPassword'}
             setFocusedField={setFocusedField}
+          />
+        </div>
+
+        <div className="flex justify-center mt-6">
+          <ReCAPTCHA
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+            onChange={(token) => setRegisterToken(token)}
+            theme="dark"
           />
         </div>
 
