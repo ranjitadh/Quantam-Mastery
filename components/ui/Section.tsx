@@ -1,4 +1,5 @@
 import React from 'react';
+import Container from '@/components/ui/Container';
 
 interface SectionProps {
     children: React.ReactNode;
@@ -9,9 +10,9 @@ interface SectionProps {
 export function Section({ children, className = '', id }: SectionProps) {
     return (
         <section id={id} className={`py-20 md:py-28 relative ${className}`}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <Container className="relative z-10">
                 {children}
-            </div>
+            </Container>
         </section>
     );
 }

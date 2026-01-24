@@ -111,7 +111,7 @@ export default function CalendarJournaling() {
           <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 4, repeat: Infinity }}
-            className="absolute -top-6 -right-6 bg-background-card border border-green-primary text-white px-4 py-2 rounded-lg shadow-lg shadow-green-primary/20"
+            className="absolute -top-6 right-0 md:-right-6 bg-background-card border border-green-primary text-white px-4 py-2 rounded-lg shadow-lg shadow-green-primary/20"
           >
             <span className="text-sm font-bold">🔥 4 Day Streak</span>
           </motion.div>

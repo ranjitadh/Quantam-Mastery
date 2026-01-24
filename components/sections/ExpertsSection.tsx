@@ -19,15 +19,15 @@ export default function ExpertsSection() {
           <div className="absolute inset-0 bg-green-primary/20 blur-[60px] rounded-full" />
           <div className="relative rounded-2xl overflow-hidden border border-green-primary/30 shadow-2xl">
             <Image
-              src="/images/founder.jpg" // Assuming this exists or using placeholder
+              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=1000&h=1000&fit=crop&crop=face" // Assuming this exists or using placeholder
               alt="Founder"
               width={500}
               height={600}
               className="w-full h-auto object-cover grayscale hover:grayscale-0 transition-all duration-700"
             />
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6">
-              <h3 className="text-2xl font-bold text-white">Ranjit Adhikari</h3>
-              <p className="text-green-primary font-medium">Head Mentor & Founder</p>
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 md:p-6">
+              <h3 className="text-xl md:text-2xl font-bold text-white leading-tight">Khan Hazara</h3>
+              <p className="text-green-primary font-medium text-sm md:text-base mt-1">Head Mentor & Founder</p>
             </div>
           </div>
         </motion.div>

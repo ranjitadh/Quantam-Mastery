@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch, Control } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'react-hot-toast'
@@ -37,9 +37,9 @@ interface FormFieldProps {
   icon: any
   register: any
   error: any
-  hasValue: boolean
   isFocused: boolean
   setFocusedField: (field: string | null) => void
+  control: Control<RegisterFormData>
 }
 
 const FormField = ({
@@ -50,11 +50,17 @@ const FormField = ({
   icon: Icon,
   register,
   error,
-  hasValue,
   isFocused,
-  setFocusedField
+  setFocusedField,
+  control
 }: FormFieldProps) => {
   const { onBlur, ref, onChange, name: fieldName } = register(name)
+
+  const fieldValue = useWatch({
+    control,
+    name
+  })
+  const hasValue = fieldValue && fieldValue.length > 0
 
   return (
     <motion.div
@@ -151,12 +157,12 @@ export default function RegisterForm({ plan, type }: RegisterFormProps) {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
+    control,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
   })
 
-  const watchedValues = watch()
+  // Removed top-level watch() to prevent re-renders
 
   const onSubmit = async (data: RegisterFormData) => {
     if (!registerToken) {
@@ -220,9 +226,9 @@ export default function RegisterForm({ plan, type }: RegisterFormProps) {
             icon={User}
             register={register}
             error={errors.name}
-            hasValue={!!watchedValues.name}
             isFocused={focusedField === 'name'}
             setFocusedField={setFocusedField}
+            control={control}
           />
 
           <FormField
@@ -233,9 +239,9 @@ export default function RegisterForm({ plan, type }: RegisterFormProps) {
             icon={Mail}
             register={register}
             error={errors.email}
-            hasValue={!!watchedValues.email}
             isFocused={focusedField === 'email'}
             setFocusedField={setFocusedField}
+            control={control}
           />
 
           <FormField
@@ -246,9 +252,9 @@ export default function RegisterForm({ plan, type }: RegisterFormProps) {
             icon={Lock}
             register={register}
             error={errors.password}
-            hasValue={!!watchedValues.password}
             isFocused={focusedField === 'password'}
             setFocusedField={setFocusedField}
+            control={control}
           />
 
           <FormField
@@ -259,9 +265,9 @@ export default function RegisterForm({ plan, type }: RegisterFormProps) {
             icon={Lock}
             register={register}
             error={errors.confirmPassword}
-            hasValue={!!watchedValues.confirmPassword}
             isFocused={focusedField === 'confirmPassword'}
             setFocusedField={setFocusedField}
+            control={control}
           />
         </div>
 

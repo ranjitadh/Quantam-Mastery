@@ -20,6 +20,120 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>
 
+const FormField = ({
+  name,
+  label,
+  type = 'text',
+  placeholder,
+  icon: Icon,
+  register,
+  errors,
+  control,
+  focusedField,
+  setFocusedField
+}: {
+  name: keyof LoginFormData
+  label: string
+  type?: string
+  placeholder: string
+  icon: any
+  register: any
+  errors: any
+  control: Control<LoginFormData>
+  focusedField: string | null
+  setFocusedField: (field: string | null) => void
+}) => {
+  const fieldValue = useWatch({
+    control,
+    name
+  })
+  const hasValue = fieldValue && fieldValue.length > 0
+  const hasError = errors[name]
+  const isFocused = focusedField === name
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="relative"
+    >
+      <div className="relative">
+        <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${isFocused ? 'text-green-primary' : hasError ? 'text-red-500' : 'text-text-muted'
+          }`}>
+          <Icon className="w-5 h-5" />
+        </div>
+
+        <input
+          {...register(name)}
+          type={type}
+          id={name}
+          onFocus={() => setFocusedField(name)}
+          onBlur={(e: any) => {
+            register(name).onBlur(e)
+            setFocusedField(null)
+          }}
+          className={`
+            w-full pl-12 pr-4 py-4 
+            bg-background-secondary
+            border rounded-xl
+            text-text-primary placeholder:text-transparent
+            transition-all duration-300
+            focus:bg-background-secondary/80 focus:outline-none
+            ${isFocused
+              ? 'border-green-primary shadow-[0_0_15px_rgba(58,255,58,0.15)]'
+              : hasError
+                ? 'border-red-500/50'
+                : 'border-white/10 hover:border-white/20'
+            }
+          `}
+          placeholder={placeholder}
+        />
+
+        <label
+          htmlFor={name}
+          className={`
+            absolute left-12 top-1/2 -translate-y-1/2
+            pointer-events-none transition-all duration-200
+            ${hasValue || isFocused
+              ? 'text-xs -translate-y-8 left-4 font-bold'
+              : 'text-base'
+            }
+            ${isFocused
+              ? 'text-green-primary'
+              : hasError
+                ? 'text-red-500'
+                : 'text-text-secondary'
+            }
+          `}
+        >
+          {label}
+        </label>
+
+        {hasValue && !hasError && (
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="absolute right-4 top-1/2 -translate-y-1/2"
+          >
+            <Check className="w-5 h-5 text-green-primary" />
+          </motion.div>
+        )}
+      </div>
+
+      {hasError && (
+        <motion.p
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-2 text-sm text-red-400 flex items-center gap-1"
+        >
+          <span className="w-1 h-1 rounded-full bg-red-400"></span>
+          {hasError.message}
+        </motion.p>
+      )}
+    </motion.div>
+  )
+}
+
 export default function LoginForm() {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -62,120 +176,6 @@ export default function LoginForm() {
     } finally {
       setIsSubmitting(false)
     }
-  }
-
-  const FormField = ({
-    name,
-    label,
-    type = 'text',
-    placeholder,
-    icon: Icon,
-    register,
-    errors,
-    control,
-    focusedField,
-    setFocusedField
-  }: {
-    name: keyof LoginFormData
-    label: string
-    type?: string
-    placeholder: string
-    icon: any
-    register: any
-    errors: any
-    control: Control<LoginFormData>
-    focusedField: string | null
-    setFocusedField: (field: string | null) => void
-  }) => {
-    const fieldValue = useWatch({
-      control,
-      name
-    })
-    const hasValue = fieldValue && fieldValue.length > 0
-    const hasError = errors[name]
-    const isFocused = focusedField === name
-
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative"
-      >
-        <div className="relative">
-          <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${isFocused ? 'text-green-primary' : hasError ? 'text-red-500' : 'text-text-muted'
-            }`}>
-            <Icon className="w-5 h-5" />
-          </div>
-
-          <input
-            {...register(name)}
-            type={type}
-            id={name}
-            onFocus={() => setFocusedField(name)}
-            onBlur={(e: any) => {
-              register(name).onBlur(e)
-              setFocusedField(null)
-            }}
-            className={`
-              w-full pl-12 pr-4 py-4 
-              bg-background-secondary
-              border rounded-xl
-              text-text-primary placeholder:text-transparent
-              transition-all duration-300
-              focus:bg-background-secondary/80 focus:outline-none
-              ${isFocused
-                ? 'border-green-primary shadow-[0_0_15px_rgba(58,255,58,0.15)]'
-                : hasError
-                  ? 'border-red-500/50'
-                  : 'border-white/10 hover:border-white/20'
-              }
-            `}
-            placeholder={placeholder}
-          />
-
-          <label
-            htmlFor={name}
-            className={`
-              absolute left-12 top-1/2 -translate-y-1/2
-              pointer-events-none transition-all duration-200
-              ${hasValue || isFocused
-                ? 'text-xs -translate-y-8 left-4 font-bold'
-                : 'text-base'
-              }
-              ${isFocused
-                ? 'text-green-primary'
-                : hasError
-                  ? 'text-red-500'
-                  : 'text-text-secondary'
-              }
-            `}
-          >
-            {label}
-          </label>
-
-          {hasValue && !hasError && (
-            <motion.div
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="absolute right-4 top-1/2 -translate-y-1/2"
-            >
-              <Check className="w-5 h-5 text-green-primary" />
-            </motion.div>
-          )}
-        </div>
-
-        {hasError && (
-          <motion.p
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-2 text-sm text-red-400 flex items-center gap-1"
-          >
-            <span className="w-1 h-1 rounded-full bg-red-400"></span>
-            {hasError.message}
-          </motion.p>
-        )}
-      </motion.div>
-    )
   }
 
   return (

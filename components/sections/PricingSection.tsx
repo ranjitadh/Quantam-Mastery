@@ -38,7 +38,7 @@ export default function PricingSection() {
                 <p className="text-text-secondary">Invest in your skills. The market pays for knowledge.</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center max-w-6xl mx-auto">
+            <div className="flex flex-col md:grid md:grid-cols-3 gap-8 items-center max-w-6xl mx-auto">
                 {plans.map((plan, i) => (
                     <motion.div
                         key={i}
@@ -46,6 +46,7 @@ export default function PricingSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.1 }}
+                        className={plan.featured ? 'order-first md:order-none w-full' : 'order-last md:order-none w-full'}
                     >
                         <Card className={`p-8 relative h-full flex flex-col ${plan.featured ? 'border-green-primary/50 shadow-featured-glow scale-105 z-10 bg-background-secondary' : 'bg-background-primary'}`}>
                             {plan.featured && (
