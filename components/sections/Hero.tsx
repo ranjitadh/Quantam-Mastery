@@ -53,7 +53,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="text-5xl md:text-7xl font-bold tracking-tight mb-6"
+          className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
         >
           Master the Markets, <br />
           <span className="text-green-primary drop-shadow-[0_0_20px_rgba(58,255,58,0.4)]">
@@ -92,6 +92,7 @@ export default function Hero() {
           ))}
         </motion.div>
 
+
         {/* CTA Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -111,16 +112,7 @@ export default function Hero() {
           </Link>
         </motion.div>
 
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-text-muted text-sm flex flex-col items-center gap-2"
-        >
-          <span>Scroll to explore</span>
-          <div className="w-[1px] h-12 bg-gradient-to-b from-green-primary/50 to-transparent"></div>
-        </motion.div>
+
 
       </Section>
     </div>

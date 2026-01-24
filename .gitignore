@@ -24,7 +24,6 @@ yarn-error.log*
 
 # Local env files
 .env*.local
-.env
 
 # Vercel
 .vercel
@@ -38,6 +37,6 @@ next-env.d.ts
 
 # IDE
 .idea
-.vscode
 *.swp
 *.swo
+config.bat

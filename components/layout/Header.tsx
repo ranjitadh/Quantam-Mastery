@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Menu, X, ChevronDown } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Logo from './Logo'
@@ -18,11 +18,32 @@ const navigation = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10)
+    }
+
+    // Check initial scroll
+    handleScroll()
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background-primary/80 backdrop-blur-xl border-b border-white/5">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${isScrolled
+          ? 'bg-background-primary/80 backdrop-blur-xl border-white/5'
+          : 'bg-transparent border-transparent'
+        }`}
+    >
       {/* Premium Top Accent Line */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-primary/50 to-transparent" />
+      <div
+        className={`absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-primary/50 to-transparent transition-opacity duration-300 ${isScrolled ? 'opacity-100' : 'opacity-0'
+          }`}
+      />
 
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
@@ -107,49 +128,60 @@ export default function Header() {
           </motion.button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation Overlay */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden py-4 space-y-2 border-t border-white/10 overflow-hidden bg-background-primary"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden fixed inset-0 z-50 bg-background-primary/95 backdrop-blur-xl"
             >
-              {navigation.map((item, index) => (
-                <motion.div
-                  key={item.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <Link
-                    href={item.href}
-                    className="
-                      block px-4 py-3 text-base font-medium 
-                      text-gray-300 hover:text-white
-                      hover:bg-white/5 rounded-lg
-                      transition-all duration-200
-                      border border-transparent hover:border-white/10
-                    "
+              <div className="flex flex-col h-full">
+                {/* Mobile Header */}
+                <div className="flex items-center justify-between px-4 h-20 border-b border-white/5">
+                  <Logo variant="dark" showText={true} />
+                  <button
                     onClick={() => setMobileMenuOpen(false)}
+                    className="p-2 text-gray-300 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
                   >
-                    {item.name}
-                  </Link>
-                </motion.div>
-              ))}
+                    <X className="h-6 w-6" />
+                  </button>
+                </div>
 
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: navigation.length * 0.05 }}
-                className="pt-2 px-4"
-              >
-                <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full">Register</Button>
-                </Link>
-              </motion.div>
+                {/* Mobile Links */}
+                <div className="flex-1 overflow-y-auto py-8 flex flex-col items-center gap-6 px-4">
+                  {navigation.map((item, index) => (
+                    <motion.div
+                      key={item.name}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 + index * 0.05 }}
+                      className="w-full text-center"
+                    >
+                      <Link
+                        href={item.href}
+                        className="block text-2xl font-medium text-text-secondary hover:text-white transition-colors py-2"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    </motion.div>
+                  ))}
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="mt-8 w-full max-w-sm"
+                  >
+                    <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
+                      <Button className="w-full text-lg py-6" size="lg">Get Started</Button>
+                    </Link>
+                  </motion.div>
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -157,4 +189,3 @@ export default function Header() {
     </header>
   )
 }
-
