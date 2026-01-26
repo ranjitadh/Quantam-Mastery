@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import AnimatedCard from '../animations/AnimatedCard'
 import FloatingElement from '../animations/FloatingElement'
 
@@ -63,10 +64,11 @@ export default function BrandShowcase() {
                                     whileHover={{ scale: 1.05 }}
                                     transition={{ duration: 0.4 }}
                                 >
-                                    <img
+                                    <Image
                                         src={image.src}
                                         alt={image.title}
-                                        className="w-full h-full object-cover"
+                                        fill
+                                        className="object-cover"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
 

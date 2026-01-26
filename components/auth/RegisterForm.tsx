@@ -2,10 +2,15 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch, Control } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'react-hot-toast'
+import { motion } from 'framer-motion'
+import { User, Mail, Lock, Check } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
+import { Card } from '@/components/ui/Card'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -24,19 +29,147 @@ interface RegisterFormProps {
   type?: string
 }
 
+interface FormFieldProps {
+  name: keyof RegisterFormData
+  label: string
+  type?: string
+  placeholder: string
+  icon: any
+  register: any
+  error: any
+  isFocused: boolean
+  setFocusedField: (field: string | null) => void
+  control: Control<RegisterFormData>
+}
+
+const FormField = ({
+  name,
+  label,
+  type = 'text',
+  placeholder,
+  icon: Icon,
+  register,
+  error,
+  isFocused,
+  setFocusedField,
+  control
+}: FormFieldProps) => {
+  const { onBlur, ref, onChange, name: fieldName } = register(name)
+
+  const fieldValue = useWatch({
+    control,
+    name
+  })
+  const hasValue = fieldValue && fieldValue.length > 0
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="relative"
+    >
+      <div className="relative">
+        <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${isFocused ? 'text-green-primary' : error ? 'text-red-500' : 'text-text-muted'
+          }`}>
+          <Icon className="w-5 h-5" />
+        </div>
+
+        <input
+          name={fieldName}
+          ref={ref}
+          onChange={onChange}
+          type={type}
+          id={name}
+          onFocus={() => setFocusedField(name)}
+          onBlur={(e) => {
+            onBlur(e)
+            setFocusedField(null)
+          }}
+          className={`
+            w-full pl-12 pr-4 py-4 
+            bg-background-secondary
+            border rounded-xl
+            text-text-primary placeholder:text-transparent
+            transition-all duration-300
+            focus:bg-background-secondary/80 focus:outline-none
+            ${isFocused
+              ? 'border-green-primary shadow-[0_0_15px_rgba(58,255,58,0.15)]'
+              : error
+                ? 'border-red-500/50'
+                : 'border-white/10 hover:border-white/20'
+            }
+          `}
+          placeholder={placeholder}
+        />
+
+        <label
+          htmlFor={name}
+          className={`
+            absolute left-12 top-1/2 -translate-y-1/2
+            pointer-events-none transition-all duration-200
+            ${hasValue || isFocused
+              ? 'text-xs -translate-y-8 left-4 font-bold'
+              : 'text-base'
+            }
+            ${isFocused
+              ? 'text-green-primary'
+              : error
+                ? 'text-red-500'
+                : 'text-text-secondary'
+            }
+          `}
+        >
+          {label}
+        </label>
+
+        {hasValue && !error && (
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="absolute right-4 top-1/2 -translate-y-1/2"
+          >
+            <Check className="w-5 h-5 text-green-primary" />
+          </motion.div>
+        )}
+      </div>
+
+      {error && (
+        <motion.p
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-2 text-sm text-red-400 flex items-center gap-1"
+        >
+          <span className="w-1 h-1 rounded-full bg-red-400"></span>
+          {error.message}
+        </motion.p>
+      )}
+    </motion.div>
+  )
+}
+
 export default function RegisterForm({ plan, type }: RegisterFormProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [registerToken, setRegisterToken] = useState<string | null>(null)
+  const [focusedField, setFocusedField] = useState<string | null>(null)
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
   })
 
+  // Removed top-level watch() to prevent re-renders
+
   const onSubmit = async (data: RegisterFormData) => {
+    if (!registerToken) {
+      toast.error('Please complete the captcha')
+      return
+    }
+
     setIsSubmitting(true)
     try {
       const response = await fetch('/api/auth/register', {
@@ -46,6 +179,7 @@ export default function RegisterForm({ plan, type }: RegisterFormProps) {
           ...data,
           plan,
           type,
+          recaptchaToken: registerToken,
         }),
       })
 
@@ -65,78 +199,112 @@ export default function RegisterForm({ plan, type }: RegisterFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 bg-secondary-bright/5 p-8 rounded-lg border-2 border-secondary-bright/20 shadow-sm">
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
-          Full Name
-        </label>
-        <input
-          {...register('name')}
-          type="text"
-          id="name"
-          className="w-full px-4 py-2 border-2 border-secondary-bright/30 bg-dark text-white rounded-md focus:border-secondary-bright focus:outline-none placeholder:text-gray-500"
-          placeholder="John Doe"
-        />
-        {errors.name && (
-          <p className="mt-1 text-sm text-red-400">{errors.name.message}</p>
-        )}
-      </div>
+    <motion.form
+      onSubmit={handleSubmit(onSubmit)}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="relative z-10 w-full"
+    >
+      <Card className="p-8 md:p-10 relative overflow-hidden bg-[#0F1A0F]/90">
 
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
-          Email Address
-        </label>
-        <input
-          {...register('email')}
-          type="email"
-          id="email"
-          className="w-full px-4 py-2 border-2 border-secondary-bright/30 bg-dark text-white rounded-md focus:border-secondary-bright focus:outline-none placeholder:text-gray-500"
-          placeholder="john@example.com"
-        />
-        {errors.email && (
-          <p className="mt-1 text-sm text-red-400">{errors.email.message}</p>
-        )}
-      </div>
+        {/* Glow Effects */}
+        <div className="absolute -top-24 -right-24 w-48 h-48 bg-green-primary/10 rounded-full blur-[80px]"></div>
+        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-green-primary/5 rounded-full blur-[80px]"></div>
 
-      <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
-          Password
-        </label>
-        <input
-          {...register('password')}
-          type="password"
-          id="password"
-          className="w-full px-4 py-2 border-2 border-secondary-bright/30 bg-dark text-white rounded-md focus:border-secondary-bright focus:outline-none placeholder:text-gray-500"
-          placeholder="••••••••"
-        />
-        {errors.password && (
-          <p className="mt-1 text-sm text-red-400">{errors.password.message}</p>
-        )}
-      </div>
+        <div className="mb-8 relative z-10">
+          <h2 className="text-3xl font-bold text-white mb-2">
+            Create Your Account
+          </h2>
+          <p className="text-text-secondary">Join the elite 1% of traders</p>
+        </div>
 
-      <div>
-        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-1">
-          Confirm Password
-        </label>
-        <input
-          {...register('confirmPassword')}
-          type="password"
-          id="confirmPassword"
-          className="w-full px-4 py-2 border-2 border-secondary-bright/30 bg-dark text-white rounded-md focus:border-secondary-bright focus:outline-none placeholder:text-gray-500"
-          placeholder="••••••••"
-        />
-        {errors.confirmPassword && (
-          <p className="mt-1 text-sm text-red-400">{errors.confirmPassword.message}</p>
-        )}
-      </div>
+        <div className="space-y-5 relative z-10">
+          <FormField
+            name="name"
+            label="Full Name"
+            placeholder="John Doe"
+            icon={User}
+            register={register}
+            error={errors.name}
+            isFocused={focusedField === 'name'}
+            setFocusedField={setFocusedField}
+            control={control}
+          />
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full px-4 py-3 bg-secondary-bright text-dark rounded-md font-medium hover:bg-secondary-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {isSubmitting ? 'Creating Account...' : 'Create Account'}
-      </button>
-    </form>
+          <FormField
+            name="email"
+            label="Email Address"
+            type="email"
+            placeholder="john@example.com"
+            icon={Mail}
+            register={register}
+            error={errors.email}
+            isFocused={focusedField === 'email'}
+            setFocusedField={setFocusedField}
+            control={control}
+          />
+
+          <FormField
+            name="password"
+            label="Password"
+            type="password"
+            placeholder="••••••••"
+            icon={Lock}
+            register={register}
+            error={errors.password}
+            isFocused={focusedField === 'password'}
+            setFocusedField={setFocusedField}
+            control={control}
+          />
+
+          <FormField
+            name="confirmPassword"
+            label="Confirm Password"
+            type="password"
+            placeholder="••••••••"
+            icon={Lock}
+            register={register}
+            error={errors.confirmPassword}
+            isFocused={focusedField === 'confirmPassword'}
+            setFocusedField={setFocusedField}
+            control={control}
+          />
+        </div>
+
+        <div className="flex justify-center mt-6">
+          <ReCAPTCHA
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+            onChange={(token) => setRegisterToken(token)}
+            theme="dark"
+          />
+        </div>
+
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full text-lg py-4 mt-8"
+        >
+          {isSubmitting ? 'Creating Account...' : 'Create Account'}
+        </Button>
+
+        {/* Trust Indicators */}
+        <div className="mt-6 flex items-center justify-center gap-4 text-sm text-text-muted relative z-10">
+          <div className="flex items-center gap-1">
+            <Check className="w-4 h-4 text-green-primary" />
+            <span>Secure</span>
+          </div>
+          <div className="w-1 h-1 rounded-full bg-gray-600"></div>
+          <div className="flex items-center gap-1">
+            <Check className="w-4 h-4 text-green-primary" />
+            <span>Encrypted</span>
+          </div>
+          <div className="w-1 h-1 rounded-full bg-gray-600"></div>
+          <div className="flex items-center gap-1">
+            <Check className="w-4 h-4 text-green-primary" />
+            <span>Private</span>
+          </div>
+        </div>
+      </Card>
+    </motion.form>
   )
 }

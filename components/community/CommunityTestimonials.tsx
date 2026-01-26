@@ -120,7 +120,7 @@ export default function CommunityTestimonials() {
 
               {/* Testimonial Text */}
               <p className="text-gray-300 leading-relaxed mb-6 italic">
-                "{testimonial.text}"
+                &quot;{testimonial.text}&quot;
               </p>
 
               {/* Result Badge */}
