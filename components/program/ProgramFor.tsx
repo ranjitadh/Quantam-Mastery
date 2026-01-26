@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import { Check } from 'lucide-react'
 
 const targetAudience = [
@@ -63,9 +64,11 @@ export default function ProgramFor() {
                 transition: 'transform 6s ease-in-out infinite'
               }}
             >
-              <img
+              <Image
                 src="/images/iamge.png"
                 alt="Who This Program Is For"
+                width={800}
+                height={600}
                 className="w-full h-auto object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent" />

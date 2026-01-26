@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
 
 export default function DashboardPage() {
-  // Redirect to overview or default dashboard view
   redirect('/dashboard/overview')
 }

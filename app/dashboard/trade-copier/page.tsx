@@ -1,73 +1,80 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Copy, Plus, Link2 } from 'lucide-react'
+import { Copy, Plus, Link2, Monitor, ArrowRight } from 'lucide-react'
+import { Card } from '@/components/ui/Card'
+import { Button } from '@/components/ui/Button'
 
 export default function TradeCopierPage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 max-w-7xl">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-white">Trade Copier</h1>
-          <p className="text-gray-300 mt-2">Sync trades between your own accounts</p>
+          <h1 className="text-3xl font-bold text-white">Trade <span className="text-green-primary">Copier</span></h1>
+          <p className="text-text-secondary mt-2">Sync trades between your own accounts</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-secondary-bright text-dark rounded-md hover:bg-secondary-light transition-colors">
+        <Button className="flex items-center gap-2">
           <Plus className="h-5 w-5" />
           Link Account
-        </button>
+        </Button>
       </div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative overflow-hidden rounded-2xl border-2 border-secondary-bright/30 shadow-2xl"
       >
-        <motion.div
-          whileHover={{ scale: 1.01 }}
-          transition={{ duration: 0.4 }}
-          className="relative"
-        >
-          <img
-            src="/images/download-2.jpg"
-            alt="Futuristic Trade Copier Synchronization"
-            className="w-full h-auto object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/60 to-transparent" />
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="absolute bottom-0 left-0 right-0 p-8"
-          >
-            <div className="flex items-start gap-4 mb-4">
-              <Copy className="h-8 w-8 text-secondary-bright flex-shrink-0" />
+        <Card className="relative overflow-hidden p-8 bg-gradient-to-br from-background-secondary to-background-primary border-green-primary/20">
+          <div className="absolute top-0 right-0 p-8 opacity-5">
+            <Copy className="w-64 h-64 text-green-primary" />
+          </div>
+
+          <div className="relative z-10">
+            <div className="flex items-start gap-4 mb-8">
+              <div className="p-4 bg-green-primary/10 rounded-2xl border border-green-primary/20">
+                <Copy className="h-8 w-8 text-green-primary" />
+              </div>
               <div>
-                <h3 className="text-2xl font-bold text-white mb-2">Trade Copier: Synchronized</h3>
-                <p className="text-secondary-bright mb-4">
-                  Connect your trading accounts to start copying trades across multiple platforms
+                <h3 className="text-2xl font-bold text-white mb-2">Synchronized Execution</h3>
+                <p className="text-text-secondary max-w-2xl">
+                  Connect your trading accounts to start copying trades across multiple platforms instantly.
+                  Low latency, high reliability.
                 </p>
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex items-start gap-3 p-4 bg-secondary-bright/10 backdrop-blur-sm rounded-lg border border-secondary-bright/20">
-                <Link2 className="h-5 w-5 text-secondary-bright mt-0.5 flex-shrink-0" />
-                <div className="text-left">
-                  <h4 className="font-semibold text-white mb-1">One Master, Many Accounts</h4>
-                  <p className="text-sm text-gray-300">
-                    Link multiple Real & Demo accounts to one master account
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex items-start gap-4 p-6 bg-background-primary/50 backdrop-blur-sm rounded-xl border border-white/5 hover:border-green-primary/30 transition-all">
+                <Link2 className="h-6 w-6 text-green-primary mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-bold text-white mb-2">One Master, Many Slaves</h4>
+                  <p className="text-sm text-text-muted leading-relaxed">
+                    Link multiple Real & Demo accounts to one master account. Trades taken on Master are instantly replicated.
                   </p>
                 </div>
               </div>
-              <div className="flex items-center justify-center p-4 bg-secondary-bright/10 backdrop-blur-sm rounded-lg border border-secondary-bright/20">
-                <p className="text-sm text-gray-300 text-center">
-                  Up to 2 accounts on Pro plan.<br />
-                  <span className="text-secondary-bright font-semibold">Upgrade for unlimited connections</span>
-                </p>
+
+              <div className="flex items-start gap-4 p-6 bg-background-primary/50 backdrop-blur-sm rounded-xl border border-white/5 hover:border-green-primary/30 transition-all">
+                <Monitor className="h-6 w-6 text-green-primary mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-bold text-white mb-2">Cross-Broker Compatible</h4>
+                  <p className="text-sm text-text-muted leading-relaxed">
+                    Copy from MT4 to MT5, cTrader to MT4, or any combination supported by our bridge.
+                  </p>
+                </div>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+
+            <div className="mt-8 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
+              <p className="text-sm text-text-muted">
+                <span className="text-green-primary font-bold">2/2 Accounts Linked</span> (Pro Plan Limit)
+              </p>
+              <Button variant="outline" className="text-xs group">
+                Upgrade for Unlimited <ArrowRight className="w-3 h-3 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </div>
+          </div>
+        </Card>
       </motion.div>
     </div>
   )

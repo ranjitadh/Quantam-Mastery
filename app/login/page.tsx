@@ -7,23 +7,30 @@ import LoginForm from '@/components/auth/LoginForm'
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen pt-16">
+    <main className="min-h-screen relative overflow-hidden flex flex-col bg-background-primary">
       <Header />
-      <div className="py-20 px-4 sm:px-6 lg:px-8 bg-dark">
-        <div className="mx-auto max-w-md">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-            <p className="text-gray-300">Sign in to your Quantum Mastery account</p>
-          </div>
+
+      {/* Decorative Gradients */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-green-primary/5 rounded-full blur-[120px]" />
+        <div className="absolute top-[20%] right-[0%] w-[30%] h-[30%] bg-green-primary/5 rounded-full blur-[100px]" />
+      </div>
+
+      <div className="flex-grow flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative z-10 pt-32">
+        <div className="w-full max-w-md">
           <LoginForm />
-          <p className="mt-6 text-center text-sm text-gray-300">
-            Don&apos;t have an account?{' '}
-            <Link href="/register" className="text-secondary-bright hover:underline font-medium">
-              Sign up
-            </Link>
-          </p>
+
+          <div className="mt-8 text-center bg-background-secondary/50 backdrop-blur-sm rounded-xl py-4 border border-white/5">
+            <p className="text-sm text-text-muted">
+              Don&apos;t have an account?{' '}
+              <Link href="/register" className="text-green-primary hover:text-white font-semibold transition-colors">
+                Sign up
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
+
       <Footer />
     </main>
   )

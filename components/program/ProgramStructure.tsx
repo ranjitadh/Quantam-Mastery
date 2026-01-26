@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 // Map images to phases
 const phaseImages: { [key: number]: string } = {
@@ -145,9 +146,11 @@ export default function ProgramStructure() {
                       transition: 'transform 6s ease-in-out infinite'
                     }}
                   >
-                    <img
+                    <Image
                       src={phaseImages[phase.phase]}
                       alt={phase.title}
+                      width={800}
+                      height={600}
                       className="w-full h-auto object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent" />

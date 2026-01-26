@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import { Check } from 'lucide-react'
 
 const ecosystemFeatures = [
@@ -64,9 +65,11 @@ export default function EcosystemSection() {
               transition={{ duration: 0.5 }}
               className="relative overflow-hidden rounded-full aspect-square border-4 border-secondary-bright/40 shadow-2xl shadow-secondary-bright/20"
             >
-              <img
+              <Image
                 src="/images/download-2.jpg"
                 alt="Futuristic Trading Ecosystem - Synchronized Platforms"
+                width={600}
+                height={600}
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/30 to-transparent" />

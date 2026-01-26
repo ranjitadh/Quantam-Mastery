@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
+import { verifyCaptcha } from '@/lib/captcha'
 
 const registerSchema = z.object({
   name: z.string().min(2),
@@ -17,6 +18,23 @@ export async function POST(request: NextRequest) {
 
     // Validate input
     const validatedData = registerSchema.parse(body)
+
+    // Verify ReCAPTCHA
+    const { recaptchaToken } = body
+    if (!recaptchaToken) {
+      return NextResponse.json(
+        { error: 'Please complete the ReCAPTCHA' },
+        { status: 400 }
+      )
+    }
+
+    const isCaptchaValid = await verifyCaptcha(recaptchaToken)
+    if (!isCaptchaValid) {
+      return NextResponse.json(
+        { error: 'Invalid ReCAPTCHA' },
+        { status: 400 }
+      )
+    }
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({

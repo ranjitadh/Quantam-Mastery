@@ -3,87 +3,67 @@
 @tailwind utilities;
 
 :root {
-  --font-sans: var(--font-sans), 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   
-  /* Brand Colors - From Reference Design */
-  --color-primary-cyan: #00F2FF;
-  --color-primary-magenta: #FF00E5;
-  --color-secondary-light: #87D593;
-  --color-secondary-bright: #C0F53D;
-  --color-dark: #1D1D1B;
-  --color-white: #FFFFFF;
+  /* Primary Colors */
+  --bg-primary: #050705;
+  --bg-secondary: #0A120A;
+  --bg-card: #0F1A0F;
+  
+  /* Accents */
+  --green-primary: #3AFF3A;
+  --green-soft: #2EDB2E;
+  
+  /* Text */
+  --text-primary: #EDEDED;
+  --text-secondary: #A8B0A8;
+  --text-muted: #6B736B;
 }
 
 @layer base {
   body {
-    @apply bg-dark text-white antialiased;
+    @apply bg-background-primary text-text-primary antialiased;
     font-family: var(--font-sans);
   }
+
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold;
+    @apply font-bold tracking-tight text-text-primary;
+  }
+
+  p {
+    @apply text-text-secondary leading-relaxed;
   }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer components {
+  /* UI Primitives */
+  
+  .btn-primary {
+    @apply px-6 py-3 rounded-button font-bold text-background-primary transition-all duration-300;
+    background: linear-gradient(180deg, #3AFF3A 0%, #22C522 100%);
+    box-shadow: 0 0 25px rgba(58,255,58,0.40);
   }
-}
-
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-dark;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-secondary-bright/30 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-secondary-bright/50;
-}
-
-/* Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+  
+  .btn-primary:hover {
+    @apply -translate-y-[1px];
+    box-shadow: 0 0 35px rgba(58,255,58,0.60);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .btn-outline {
+    @apply px-6 py-3 rounded-button font-bold text-green-primary border border-green-primary bg-transparent transition-all duration-300;
   }
-}
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-/* ReCAPTCHA badge positioning */
-.grecaptcha-badge {
-  visibility: hidden;
-}
-
-/* Floating animation for platform */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
+  .btn-outline:hover {
+    box-shadow: 0 0 20px rgba(58,255,58,0.25);
+    background: rgba(58,255,58,0.05);
   }
-  50% {
-    transform: translateY(-10px);
-  }
-}
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+  .card-glass {
+    @apply bg-background-card border border-border-soft rounded-card backdrop-blur-sm;
+    box-shadow: 0 0 30px rgba(58,255,58,0.05);
+  }
+
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20;
+  }
 }
